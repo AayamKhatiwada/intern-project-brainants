@@ -1,16 +1,20 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import firebase from "firebase/auth";
 import { FirebaseError } from '@firebase/util'
-import { createAuthUserWithEmailAndPassword, createUserDocumentFromAuth, signInWithGooglePopup, signinAuthUserWithEmailAndPassword } from './firebase';
+import { Data, Items, addDataToFirebase, checkUser, createAuthUserWithEmailAndPassword, createUserDocumentFromAuth, getCategoriesFromFirebase, getCategoryFromFirebaseByName, getUserData, signInWithGooglePopup, signOutUser, signinAuthUserWithEmailAndPassword } from './firebase';
+import DATA from './data';
+import LoginComponent from './Login/login.component';
+import RegisterComponent from './Register/register.component';
+
+interface UserData {
+  displayName: string
+  email: string
+}
 
 const App: React.FC = () => {
-  const [emailRegister, setEmailRegister] = useState<string>('');
-  const [passwordRegister, setPasswordRegister] = useState<string>('');
+  const [shopData, setShopData] = useState<Data[] | null>(null)
 
-  const [emailLogin, setEmailLogin] = useState<string>('');
-  const [passwordLogin, setPasswordLogin] = useState<string>('');
-
-  const [user, setUser] = useState<firebase.User | null>(null);
+  const [user, setUser] = useState<firebase.User | null | UserData>(null);
 
   const signIn = async () => {
     try {
@@ -25,99 +29,68 @@ const App: React.FC = () => {
     }
   };
 
-  const handleSubmitRegister = async (e: React.FormEvent) => {
-    e.preventDefault()
-    // console.log(email, password)
-    try {
-      const { user }: any = await createAuthUserWithEmailAndPassword(emailRegister, passwordRegister)
-      await createUserDocumentFromAuth(user)
-      setUser(user)
-      console.log(user)
-    } catch (error: unknown) {
-      if (error instanceof FirebaseError) {
-        if (error.code === "auth/email-already-in-use") {
-          alert("Email already used")
-        }
+  const handleSignOut = () => {
+    signOutUser().then(() => {
+      setUser(null)
+    })
+  }
+
+  useEffect(() => {
+    checkUser(async (user: firebase.User | null) => {
+      if (user) {
+        const userData = await getUserData(user.uid)
+        setUser(userData)
+        const categories: Data[] | undefined = await getCategoriesFromFirebase()
+        // console.log(categories)
+        setShopData(categories)
+      } else {
+        console.log("user is logged out")
       }
-    }
-  }
+    })
+  }, [])
 
-  const handleSubmitLogin = (e: React.FormEvent) => {
-    e.preventDefault()
 
-    console.log(emailLogin, passwordLogin)
-  }
+  const handleFormSubmit = () => {
+    // addDataToFirebase(DATA);
+    // getCategoryFromFirebaseByName("hats")
+  };
 
   return (
     <div className="App">
       {!user && (
         <>
-          <h1>Register</h1>
-          <div className="register">
-            <form onSubmit={handleSubmitRegister}>
-              <div>
-                <label htmlFor="emailRegister">Email:</label>
-                <input
-                  type="emailRegister"
-                  id="email"
-                  value={emailRegister}
-                  onChange={(e) => setEmailRegister(e.target.value)}
-                />
-              </div>
-              <div>
-                <label htmlFor="passwordRegister">Password:</label>
-                <input
-                  type="password"
-                  id="password"
-                  value={passwordRegister}
-                  onChange={(e) => setPasswordRegister(e.target.value)}
-                />
-              </div>
-              <button type="submit">Submit</button>
-            </form>
-            <button onClick={() => signIn()}>Google</button>
-          </div>
+          <RegisterComponent />
+          <button onClick={() => signIn()}>Google</button>
+
+          <LoginComponent />
         </>
       )}
+      <button onClick={() => handleSignOut()}>Sign out</button>
       {
         user && (
-          <div>
-            Name: {user?.displayName}
-            <br />
-            Email: {user?.email}
-          </div>
-        )
-      }
-
-      {
-        !user && (
-          <div className="login">
-            <h1>Login</h1>
-            <form onSubmit={handleSubmitLogin}>
-              <div>
-                <label htmlFor="emailLogin">Email:</label>
-                <input
-                  type="emailLogin"
-                  id="email"
-                  value={emailLogin}
-                  onChange={(e) => setEmailLogin(e.target.value)}
-                />
-              </div>
-              <div>
-                <label htmlFor="passwordLogin">Password:</label>
-                <input
-                  type="password"
-                  id="password"
-                  value={passwordLogin}
-                  onChange={(e) => setPasswordLogin(e.target.value)}
-                />
-              </div>
-              <button type="submit">Submit</button>
-            </form>
-          </div>
+          <>
+            <div>
+              Hello {user?.displayName}
+            </div>
+            <div  style={{display: "flex", justifyContent: "space-around", flexWrap: "nowrap"}}>
+              {
+                shopData?.map((category: Data) => {
+                  return (
+                    <div key={category.id}>
+                      <div>
+                        Title: {category.title}
+                      </div>
+                      <img src={category.imageUrl} alt="" width="200px" height="200px" style={{ objectFit: "cover" }} />
+                    </div>
+                  )
+                })
+              }
+            </div>
+          </>
         )
       }
     </div>
+
   );
 };
 
