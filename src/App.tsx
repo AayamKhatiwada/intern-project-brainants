@@ -1,94 +1,52 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect } from 'react';
 import firebase from "firebase/auth";
-import { FirebaseError } from '@firebase/util'
-import { Data, Items, addDataToFirebase, checkUser, createAuthUserWithEmailAndPassword, createUserDocumentFromAuth, getCategoriesFromFirebase, getCategoryFromFirebaseByName, getUserData, signInWithGooglePopup, signOutUser, signinAuthUserWithEmailAndPassword } from './firebase';
+import { Data, addDataToFirebase, checkUser, getCategoriesFromFirebase, getUserData } from './firebase';
 import DATA from './data';
 import LoginComponent from './Login/login.component';
 import RegisterComponent from './Register/register.component';
-
-interface UserData {
-  displayName: string
-  email: string
-}
+import { useDispatch, useSelector } from 'react-redux';
+import { addUser, isLoading, removeUser } from './store/User/userSlice';
+import { RootInterface } from './store/store';
+import HomeComponent from './Home/home';
+import { addShop } from './store/Shop/shopSlice';
 
 const App: React.FC = () => {
-  const [shopData, setShopData] = useState<Data[] | null>(null)
-
-  const [user, setUser] = useState<firebase.User | null | UserData>(null);
-
-  const signIn = async () => {
-    try {
-      const { user } = await signInWithGooglePopup();
-      setUser(user);
-    } catch (error: unknown) {
-      if (error instanceof FirebaseError) {
-        if (error.code === "auth/popup-closed-by-user") {
-          console.log("Pop up closed by user")
-        }
-      }
-    }
-  };
-
-  const handleSignOut = () => {
-    signOutUser().then(() => {
-      setUser(null)
-    })
-  }
+  const dispatch = useDispatch()
+  const currentUser = useSelector((state: RootInterface) => state.user.user)
+  // console.log(currentUser)
 
   useEffect(() => {
-    checkUser(async (user: firebase.User | null) => {
-      if (user) {
-        const userData = await getUserData(user.uid)
-        setUser(userData)
-        const categories: Data[] | undefined = await getCategoriesFromFirebase()
+    checkUser(async (userLog: firebase.User | null) => {
+      // console.log("loading")
+      dispatch(isLoading(true))
+      // console.log(userLog)
+      if (userLog) {
+        const userData = await getUserData(userLog.uid)
+        dispatch(addUser(userData))
+        const categories: Data[] = await getCategoriesFromFirebase()
         // console.log(categories)
-        setShopData(categories)
+        dispatch(addShop(categories))
       } else {
-        console.log("user is logged out")
+        // console.log("No user found")
       }
+      dispatch(isLoading(false))
     })
   }, [])
 
-
-  const handleFormSubmit = () => {
-    // addDataToFirebase(DATA);
-    // getCategoryFromFirebaseByName("hats")
-  };
+  // const handleFormSubmit = () => {
+  //   addDataToFirebase(DATA);
+  // };
 
   return (
     <div className="App">
-      {!user && (
+      {!currentUser ? (
         <>
           <RegisterComponent />
-          <button onClick={() => signIn()}>Google</button>
-
           <LoginComponent />
         </>
+      ) : (
+        <HomeComponent />
       )}
-      <button onClick={() => handleSignOut()}>Sign out</button>
-      {
-        user && (
-          <>
-            <div>
-              Hello {user?.displayName}
-            </div>
-            <div  style={{display: "flex", justifyContent: "space-around", flexWrap: "nowrap"}}>
-              {
-                shopData?.map((category: Data) => {
-                  return (
-                    <div key={category.id}>
-                      <div>
-                        Title: {category.title}
-                      </div>
-                      <img src={category.imageUrl} alt="" width="200px" height="200px" style={{ objectFit: "cover" }} />
-                    </div>
-                  )
-                })
-              }
-            </div>
-          </>
-        )
-      }
     </div>
 
   );

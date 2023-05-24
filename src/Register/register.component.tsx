@@ -1,5 +1,5 @@
 import { useState } from 'react'
-import { createAuthUserWithEmailAndPassword, createUserDocumentFromAuth } from '../firebase';
+import { createAuthUserWithEmailAndPassword, createUserDocumentFromAuth, signInWithGooglePopup } from '../firebase';
 import { FirebaseError } from '@firebase/util'
 
 const RegisterComponent = () => {
@@ -13,7 +13,7 @@ const RegisterComponent = () => {
         try {
             const { user }: any = await createAuthUserWithEmailAndPassword(emailRegister, passwordRegister)
             const data: any = await createUserDocumentFromAuth(user, nameRegister)
-            console.log(data)
+            console.log(user)
         } catch (error: unknown) {
             if (error instanceof FirebaseError) {
                 if (error.code === "auth/email-already-in-use") {
@@ -22,6 +22,20 @@ const RegisterComponent = () => {
             }
         }
     }
+
+    const signIn = async () => {
+        try {
+        const { user } = await signInWithGooglePopup();
+        await createUserDocumentFromAuth(user, user.displayName)
+        } catch (error: unknown) {
+        if (error instanceof FirebaseError) {
+            if (error.code === "auth/popup-closed-by-user") {
+            console.log("Pop up closed by user")
+            }
+        }
+        }
+    };
+
     return (
         <>
             <h1>Register</h1>
@@ -56,6 +70,7 @@ const RegisterComponent = () => {
                     </div>
                     <button type="submit">Submit</button>
                 </form>
+                <button onClick={() => signIn()}>Google</button>
             </div>
         </>
     )
