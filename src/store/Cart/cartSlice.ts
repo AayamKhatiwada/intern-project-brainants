@@ -29,25 +29,50 @@ const cartSlice = createSlice({
       let found = false;
       state.cart.map((cartItem) => {
         if (cartItem.name === action.payload.name) {
-          cartItem.number++;
           found = true;
+          cartItem.number++;
         }
       });
       if (!found) {
         state.cart.push({ ...action.payload, number: 1 });
       }
     },
-    increaseCount: (state: CartStateInterface, action: PayloadAction<string>) => {
+    increaseCount: (
+      state: CartStateInterface,
+      action: PayloadAction<string>
+    ) => {
       state.cart.map((cartItem) => {
         if (cartItem.name === action.payload) {
           cartItem.number++;
         }
       });
     },
-    decreaseCount: (state: CartStateInterface, action: PayloadAction<string>) => {
-      state.cart.map((cartItem) => {
+    decreaseCount: (
+      state: CartStateInterface,
+      action: PayloadAction<string>
+    ) => {
+      state.cart.map((cartItem, index) => {
         if (cartItem.name === action.payload) {
-          cartItem.number--;
+          if (cartItem.number > 2) {
+            cartItem.number--;
+          } else if (cartItem.number === 1) {
+            state.cart.splice(index, 1);
+          }
+        }
+      });
+    },
+    removeItemFromCart: (
+      state: CartStateInterface,
+      action: PayloadAction<string>
+    ) => {
+      // state.cart.filter((cartItem) => {
+      //   console.log(cartItem.name !== action.payload);
+      //   return cartItem.name !== action.payload;
+      // });
+      state.cart.forEach((cartItem, index) => {
+        if (cartItem.name === action.payload) {
+          state.cart.splice(index, 1);
+          return;
         }
       });
     },
@@ -68,4 +93,11 @@ const cartSlice = createSlice({
 
 export default cartSlice.reducer;
 
-export const { addCart, setName, setEmail } = cartSlice.actions;
+export const {
+  addCart,
+  setName,
+  setEmail,
+  increaseCount,
+  decreaseCount,
+  removeItemFromCart,
+} = cartSlice.actions;

@@ -1,21 +1,23 @@
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { RootInterface } from "../store/store";
+import { decreaseCount, increaseCount, removeItemFromCart } from "../store/Cart/cartSlice";
 
 const CartComponent = () => {
 
     const cart = useSelector((state: RootInterface) => state.cart)
+    const dispatch = useDispatch()
     let total = 0
 
     const increaseItem = (name: string) => {
-        console.log(name)
+        dispatch(increaseCount(name))
     }
 
     const decreaseItem = (name: string) => {
-        console.log(name)
+        dispatch(decreaseCount(name))
     }
 
     const removeItem = (name: string) => {
-        console.log(name)
+        dispatch(removeItemFromCart(name))
     }
 
     return (
