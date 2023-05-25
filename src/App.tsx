@@ -1,14 +1,18 @@
 import React, { useEffect } from 'react';
 import firebase from "firebase/auth";
-import { Data, addDataToFirebase, checkUser, getCategoriesFromFirebase, getUserData } from './firebase';
-import DATA from './data';
+import { Data, checkUser, getCategoriesFromFirebase, getUserData } from './firebase';
+// import DATA from './data';
 import LoginComponent from './Login/login.component';
 import RegisterComponent from './Register/register.component';
 import { useDispatch, useSelector } from 'react-redux';
-import { addUser, isLoading, removeUser } from './store/User/userSlice';
+import { addUser, isLoading } from './store/User/userSlice';
 import { RootInterface } from './store/store';
 import HomeComponent from './Home/home';
 import { addShop } from './store/Shop/shopSlice';
+import { Route, Routes } from 'react-router-dom';
+import './App.css'
+import CartComponent from './Home/cart';
+import NavigateBarComponent from './Home/navigationBar';
 
 const App: React.FC = () => {
   const dispatch = useDispatch()
@@ -31,7 +35,7 @@ const App: React.FC = () => {
       }
       dispatch(isLoading(false))
     })
-  }, [])
+  }, [dispatch])
 
   // const handleFormSubmit = () => {
   //   addDataToFirebase(DATA);
@@ -39,15 +43,26 @@ const App: React.FC = () => {
 
   return (
     <div className="App">
-      {!currentUser ? (
-        <>
-          <RegisterComponent />
-          <LoginComponent />
-        </>
-      ) : (
-        <HomeComponent />
-      )}
-    </div>
+
+      <Routes>
+        <Route index element=
+          {
+            !currentUser ? (
+              <>
+                <RegisterComponent />
+                <LoginComponent />
+              </>
+            ) : <HomeComponent />
+          }
+        />
+        <Route path='/cart' element={
+          <>
+            <NavigateBarComponent />
+            <CartComponent />
+          </>
+        } />
+      </Routes>
+    </div >
 
   );
 };

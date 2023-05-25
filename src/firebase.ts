@@ -7,11 +7,7 @@ import {
   getDoc,
   setDoc,
   collection,
-  writeBatch,
-  query,
   getDocs,
-  Firestore,
-  addDoc,
 } from "firebase/firestore";
 import {
   getAuth,
@@ -20,6 +16,7 @@ import {
   signInWithEmailAndPassword,
   createUserWithEmailAndPassword,
 } from "firebase/auth";
+import { CartStateInterface } from "./store/Cart/cartSlice";
 // TODO: Add SDKs for Firebase products that you want to use
 // https://firebase.google.com/docs/web/setup#available-libraries
 
@@ -149,7 +146,8 @@ export const signOutUser = async () => {
   return await signOut(auth);
 };
 
-export const checkUser = (callback: any) => onAuthStateChanged(auth, callback);
+export const checkUser = (callback: firebase.NextOrObserver<firebase.User>) =>
+  onAuthStateChanged(auth, callback);
 
 export const addDataToFirebase = async (data: Data[]) => {
   try {
@@ -200,5 +198,18 @@ export const getCategoryFromFirebaseByName = async (documentName: string) => {
   } catch (error) {
     console.error("Error getting category:", error);
     return null;
+  }
+};
+
+export const submitCartToFirebase = async (data: CartStateInterface) => {
+  try {
+    const collectionRef = collection(db, "cart");
+    const docRef = doc(collectionRef);
+    await setDoc(docRef, data);
+
+    // await addDoc(collectionRef, data);
+    console.log("Data added successfully!");
+  } catch (error) {
+    console.error("Error adding data:", error);
   }
 };

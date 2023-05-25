@@ -32,6 +32,7 @@ const cartSlice = createSlice({
           found = true;
           cartItem.number++;
         }
+        return 0;
       });
       if (!found) {
         state.cart.push({ ...action.payload, number: 1 });
@@ -45,6 +46,7 @@ const cartSlice = createSlice({
         if (cartItem.name === action.payload) {
           cartItem.number++;
         }
+        return 0;
       });
     },
     decreaseCount: (
@@ -53,12 +55,13 @@ const cartSlice = createSlice({
     ) => {
       state.cart.map((cartItem, index) => {
         if (cartItem.name === action.payload) {
-          if (cartItem.number > 2) {
+          if (cartItem.number >= 2) {
             cartItem.number--;
           } else if (cartItem.number === 1) {
             state.cart.splice(index, 1);
           }
         }
+        return 0;
       });
     },
     removeItemFromCart: (
@@ -75,6 +78,9 @@ const cartSlice = createSlice({
           return;
         }
       });
+    },
+    clearCart: (state: CartStateInterface) => {
+      state.cart = [];
     },
     setName: (
       state: CartStateInterface,
@@ -100,4 +106,5 @@ export const {
   increaseCount,
   decreaseCount,
   removeItemFromCart,
+  clearCart,
 } = cartSlice.actions;

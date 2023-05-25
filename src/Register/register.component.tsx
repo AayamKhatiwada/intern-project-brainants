@@ -12,7 +12,7 @@ const RegisterComponent = () => {
         // console.log(email, password)
         try {
             const { user }: any = await createAuthUserWithEmailAndPassword(emailRegister, passwordRegister)
-            const data: any = await createUserDocumentFromAuth(user, nameRegister)
+            await createUserDocumentFromAuth(user, nameRegister)
             console.log(user)
         } catch (error: unknown) {
             if (error instanceof FirebaseError) {
