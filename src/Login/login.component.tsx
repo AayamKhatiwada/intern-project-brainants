@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, { useState } from 'react';
 import { signinAuthUserWithEmailAndPassword } from '../firebase';
 
 const LoginComponent: React.FC = () => {
@@ -16,29 +16,29 @@ const LoginComponent: React.FC = () => {
     }
     return (
         <>
-            <div className="login">
-                <h1>Login</h1>
-                <form onSubmit={handleSubmitLogin}>
-                    <div>
-                        <label htmlFor="emailLogin">Email:</label>
-                        <input
-                            type="email"
-                            id="emailLogin"
-                            value={emailLogin}
-                            onChange={(e) => setEmailLogin(e.target.value)}
-                        />
-                    </div>
-                    <div>
-                        <label htmlFor="passwordLogin">Password:</label>
-                        <input
-                            type="password"
-                            id="passwordLogin"
-                            value={passwordLogin}
-                            onChange={(e) => setPasswordLogin(e.target.value)}
-                        />
-                    </div>
-                    <button type="submit">Submit</button>
-                </form>
+            <div className="flex">
+                <div className="bg-gray-300 p-8 rounded shadow-md ml-5 mt-5">
+                    <h2 className="text-2xl font-bold mb-6">Login</h2>
+                    <form onSubmit={handleSubmitLogin}>
+                        <div className="mb-4">
+                            <label className="block text-gray-700 text-sm font-bold mb-2" htmlFor="email">
+                                Email
+                            </label>
+                            <input className="appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:border-blue-500" id="email" type="email" placeholder="Enter your email" value={emailLogin}
+                                onChange={(e) => setEmailLogin(e.target.value)} />
+                        </div>
+                        <div className="mb-4">
+                            <label className="block text-gray-700 text-sm font-bold mb-2" htmlFor="password">
+                                Password
+                            </label>
+                            <input className="appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:border-blue-500" id="password" type="password" placeholder="Enter your password" value={passwordLogin}
+                                onChange={(e) => setPasswordLogin(e.target.value)} />
+                        </div>
+                        <button className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline" type="submit">
+                            Login
+                        </button>
+                    </form>
+                </div>
             </div>
         </>
     )

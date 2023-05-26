@@ -1,27 +1,17 @@
-import { useDispatch, useSelector } from "react-redux";
+import { useSelector } from "react-redux";
 import { RootInterface } from "../store/store";
-import { Data, signOutUser } from "../firebase";
-import { removeUser } from "../store/User/userSlice";
+import { Data } from "../firebase";
 import Items from "./Items";
 import { useState } from "react";
 import CartComponent from "./cart";
+import NavigateBarComponent from "./navigationBar";
 
 const HomeComponent = () => {
 
-    const dispatch = useDispatch()
-
-    const currentUser = useSelector((state: RootInterface) => state.user.user)
     const isLoading = useSelector((state: RootInterface) => state.user.loading)
     const shopData = useSelector((state: RootInterface) => state.shop.shop)
 
     const [displayCategories, setDisplayCategories] = useState<Data | null>(null)
-    // console.log(shopData)
-
-    const handleSignOut = () => {
-        signOutUser().then(() => {
-            dispatch(removeUser())
-        })
-    }
 
     const displayItems = (categoryData: Data | null) => {
         return (
@@ -33,23 +23,18 @@ const HomeComponent = () => {
         <>
             {
                 isLoading ? (
-                    <h1>Loading</h1>
+                    <div className="text-8xl">Loading</div>
                 ) :
                     (
                         <div>
-                            <div>
-                                Hello {currentUser?.displayName}
-                            </div>
-                            <button onClick={() => handleSignOut()}>Sign out</button>
-                            <div style={{ display: "flex", justifyContent: "space-around", flexWrap: "nowrap" }}>
+                            <NavigateBarComponent />
+                            <div className="flex justify-around	flex-wrap gap-4">
                                 {
                                     shopData?.map((category: Data) => {
                                         return (
-                                            <div key={category.id} onClick={() => setDisplayCategories(category)}>
-                                                <div>
-                                                    Title: {category.title}
-                                                </div>
-                                                <img src={category.imageUrl} alt="" width="200px" height="200px" style={{ objectFit: "cover" }} />
+                                            <div key={category.id} onClick={() => setDisplayCategories(category)} className="flex-shrink-1 w-1/4 relative">
+                                                <img src={category.imageUrl} alt={category.title} style={{ objectFit: "cover", height: "300px" }} />
+                                                <div className="text-6xl absolute top-[35%] left-[30%] text-white">{category.title[0].toUpperCase() + category.title.substring(1)}</div>
                                             </div>
                                         )
                                     })

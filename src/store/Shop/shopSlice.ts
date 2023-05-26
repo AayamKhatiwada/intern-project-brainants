@@ -1,5 +1,5 @@
 import { PayloadAction, createSlice } from "@reduxjs/toolkit";
-import { Data, Items } from "../../firebase";
+import { Data } from "../../firebase";
 
 export interface ShopStateInterface {
   shop: Data[] | null | undefined;
