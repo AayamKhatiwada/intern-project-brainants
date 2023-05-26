@@ -2,12 +2,15 @@ import { useDispatch, useSelector } from "react-redux";
 import { RootInterface } from "../store/store";
 import { clearCart, decreaseCount, increaseCount, removeItemFromCart } from "../store/Cart/cartSlice";
 import { submitCartToFirebase } from "../firebase";
+import { useNavigate } from "react-router-dom";
 
 const CartComponent = () => {
 
-    const cart = useSelector((state: RootInterface) => state.cart)
     const dispatch = useDispatch()
+    const navigate = useNavigate()
     let total = 0
+
+    const cart = useSelector((state: RootInterface) => state.cart)
     // console.log(cart)
 
     const increaseItem = (name: string) => {
@@ -25,12 +28,13 @@ const CartComponent = () => {
     const submitToFirebase = () => {
         submitCartToFirebase(cart)
         dispatch(clearCart())
+        navigate('/')
     }
 
     return (
         <div>
             {
-                cart.cart.length !== 0 && (
+                cart.cart.length !== 0 ? (
                     <>
                         <div className="text-3xl my-3">Cart</div>
                         <div className="flex justify-around	flex-wrap gap-4">
@@ -40,7 +44,7 @@ const CartComponent = () => {
                                     return (
                                         <div key={cartItem.id} className="w-1/5 flex flex-col items-center my-5">
                                             <div className="text-2xl p-2">{cartItem.name}</div>
-                                            <img src={cartItem.imageUrl} alt={cartItem.name} height="200px" />
+                                            <img src={cartItem.imageUrl} alt={cartItem.name} style={{ height: "20rem", width: "15rem", objectFit: "cover" }} />
                                             <div>Pieces: {cartItem.number}</div>
                                             <div>Price per piece: {cartItem.price}</div>
                                             <div>Total: {cartItem.price * cartItem.number}</div>
@@ -54,12 +58,14 @@ const CartComponent = () => {
                                 })
                             }
                         </div>
-                        <div className="text-2xl">Total: {total}</div>
+                        <div className="text-2xl">Total price: {total}</div>
                         <button onClick={submitToFirebase} className="bg-blue-500 hover:bg-blue-600 text-white font-bold py-2 px-4 my-5 border border-blue-700 rounded">
                             Buy
                         </button>
                     </>
                 )
+                    :
+                    <div>There is nothing to look in the cart</div>
             }
         </div>
     )

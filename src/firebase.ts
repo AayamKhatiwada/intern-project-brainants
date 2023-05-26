@@ -205,7 +205,8 @@ export const submitCartToFirebase = async (data: CartStateInterface) => {
   try {
     const collectionRef = collection(db, "cart");
     const docRef = doc(collectionRef);
-    await setDoc(docRef, data);
+    const createdAt = new Date();
+    await setDoc(docRef, { ...data, createdAt });
 
     // await addDoc(collectionRef, data);
     console.log("Data added successfully!");
