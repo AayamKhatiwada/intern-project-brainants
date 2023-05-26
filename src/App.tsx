@@ -43,15 +43,14 @@ const App: React.FC = () => {
 
   return (
     <div className="App">
-
       <Routes>
         <Route index element=
           {
             !currentUser ? (
-              <>
+              <div className='flex justify-around'>
                 <RegisterComponent />
                 <LoginComponent />
-              </>
+              </div>
             ) : <HomeComponent />
           }
         />
