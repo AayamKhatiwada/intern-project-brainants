@@ -13,6 +13,7 @@ import { Route, Routes } from 'react-router-dom';
 import './App.css'
 import CartComponent from './Home/cart';
 import NavigateBarComponent from './Home/navigationBar';
+import ProductRoute from './routes/product.route';
 
 const App: React.FC = () => {
   const dispatch = useDispatch()
@@ -58,6 +59,12 @@ const App: React.FC = () => {
           <>
             <NavigateBarComponent />
             <CartComponent />
+          </>
+        } />
+        <Route path='/products/*' element={
+          <>
+            <NavigateBarComponent />
+            <ProductRoute />
           </>
         } />
       </Routes>
