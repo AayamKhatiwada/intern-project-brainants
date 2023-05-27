@@ -20,12 +20,12 @@ const Items: React.FC = () => {
     const currentUser = useSelector((state: RootInterface) => state.user.user)
     const shop = useSelector((state: RootInterface) => state.shop.shop)
     const [categories, setCategories] = useState<Data[] | null | undefined>([])
+    const cartdata = useSelector((state: RootInterface) => state.cart)
 
     const addToCart = (item: CartItem) => {
-        dispatch(setName(currentUser?.displayName))
-        dispatch(setEmail(currentUser?.email))
+        !cartdata.name && dispatch(setName(currentUser?.displayName))
+        !cartdata.email && dispatch(setEmail(currentUser?.email))
         dispatch(addCart(item))
-        // console.log(item)
     }
 
     useEffect(() => {

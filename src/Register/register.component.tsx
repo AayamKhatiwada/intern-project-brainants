@@ -39,31 +39,31 @@ const RegisterComponent = () => {
     return (
         <div>
             <div className="flex">
-                <div className="bg-gray-300 p-8 rounded shadow-md ml-5 mt-5">
+                <div className="bg-gray-300 p-10 rounded shadow-md">
                     <h2 className="text-2xl font-bold mb-6">Register</h2>
                     <form onSubmit={handleSubmitRegister}>
                         <div className="mb-4">
                             <label className="block text-gray-700 text-sm font-bold mb-2" htmlFor="nameRegister">
                                 Name
                             </label>
-                            <input className="appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:border-blue-500" id="nameRegister" type="text" placeholder="Enter your name" value={nameRegister}
+                            <input className="border rounded w-full py-2 px-3 text-gray-700 focus:border-blue-500" id="nameRegister" type="text" placeholder="Enter your name" value={nameRegister}
                                 onChange={(e) => setNameRegister(e.target.value)} />
                         </div>
                         <div className="mb-4">
                             <label className="block text-gray-700 text-sm font-bold mb-2" htmlFor="emailRegister">
                                 Email
                             </label>
-                            <input className="appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:border-blue-500" id="emailRegister" type="email" placeholder="Enter your email" value={emailRegister}
+                            <input className="border rounded w-full py-2 px-3 text-gray-700 focus:border-blue-500" id="emailRegister" type="email" placeholder="Enter your email" value={emailRegister}
                                 onChange={(e) => setEmailRegister(e.target.value)} />
                         </div>
                         <div className="mb-4">
                             <label className="block text-gray-700 text-sm font-bold mb-2" htmlFor="passwordRegister">
                                 Password
                             </label>
-                            <input className="appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:border-blue-500" id="passwordRegister" type="password" placeholder="Enter your password" value={passwordRegister}
+                            <input className="border rounded w-full py-2 px-3 text-gray-700 focus:border-blue-500" id="passwordRegister" type="password" placeholder="Enter your password" value={passwordRegister}
                                 onChange={(e) => setPasswordRegister(e.target.value)} />
                         </div>
-                        <button className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline" type="submit">
+                        <button className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:shadow-outline" type="submit">
                             Register
                         </button>
                     </form>
