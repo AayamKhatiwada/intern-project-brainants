@@ -1,6 +1,6 @@
 import React, { useEffect } from 'react';
 import firebase from "firebase/auth";
-import { Data, checkUser, getCategoriesFromFirebase, getUserData } from './firebase';
+import { Data, ReadCurrentCart, checkUser, getCategoriesFromFirebase, getUserData } from './firebase';
 // import DATA from './data';
 import LoginComponent from './Login/login.component';
 import RegisterComponent from './Register/register.component';
@@ -14,11 +14,13 @@ import './App.css'
 import CartComponent from './Home/cart';
 import NavigateBarComponent from './Home/navigationBar';
 import ProductRoute from './routes/product.route';
+import { CartStateInterface, addCart, setCart } from './store/Cart/cartSlice';
+import { DocumentData } from 'firebase/firestore';
+import { CartItem } from './Home/Items';
 
 const App: React.FC = () => {
   const dispatch = useDispatch()
   const currentUser = useSelector((state: RootInterface) => state.user.user)
-  // console.log(currentUser)
 
   useEffect(() => {
     checkUser(async (userLog: firebase.User | null) => {
@@ -31,6 +33,10 @@ const App: React.FC = () => {
         const categories: Data[] = await getCategoriesFromFirebase()
         // console.log(categories)
         dispatch(addShop(categories))
+
+        const cart= await ReadCurrentCart(userData?.email)
+        dispatch(setCart(cart))
+
       } else {
         // console.log("No user found")
       }
@@ -48,7 +54,7 @@ const App: React.FC = () => {
         <Route index element=
           {
             !currentUser ? (
-              <div className='flex justify-around'>
+              <div className='flex justify-around mt-5'>
                 <RegisterComponent />
                 <LoginComponent />
               </div>

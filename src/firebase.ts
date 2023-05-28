@@ -8,6 +8,8 @@ import {
   setDoc,
   collection,
   getDocs,
+  updateDoc,
+  deleteDoc,
 } from "firebase/firestore";
 import {
   getAuth,
@@ -100,15 +102,6 @@ export const createAuthUserWithEmailAndPassword = async (
   }
 
   return await createUserWithEmailAndPassword(auth, email, password);
-  // return await createUserWithEmailAndPassword(auth, email, password).then((userCredential) => {
-  //     // User created successfully
-  //     const user = userCredential.user;
-
-  //     // Set the user's name
-  //     return user?.updateProfile({
-  //         displayName: email
-  //     })
-  // });
 };
 
 export const signinAuthUserWithEmailAndPassword = async (
@@ -212,5 +205,65 @@ export const submitCartToFirebase = async (data: CartStateInterface) => {
     console.log("Data added successfully!");
   } catch (error) {
     console.error("Error adding data:", error);
+  }
+};
+
+export const AddCurrentCart = async (
+  data: CartStateInterface,
+  email: string | undefined
+) => {
+  try {
+    const docRef = doc(db, "currentcart", email ? email : "null");
+    await setDoc(docRef, data);
+
+    console.log("Data added successfully to current Cart");
+  } catch (error) {
+    console.error("Error adding data:", error);
+  }
+};
+
+export const UpdateCurrentCart = async (
+  data: CartStateInterface,
+  email: string | undefined
+) => {
+  try {
+    const docRef = doc(db, "currentcart", email ? email : "null");
+    await updateDoc(docRef, { cart: data.cart });
+
+    console.log("Data updated successfully to current Cart");
+  } catch (error) {
+    console.error("Error updating data:", error);
+  }
+};
+
+export const DeleteCurrentCart = async (email: string | undefined) => {
+  try {
+    const docRef = doc(db, "currentcart", email ? email : "null");
+    await deleteDoc(docRef);
+
+    console.log("Data deleted successfully to current Cart");
+  } catch (error) {
+    console.error("Error adding data:", error);
+  }
+};
+
+export const ReadCurrentCart = async (email: string) => {
+  try {
+    const docRef = doc(db, "currentcart", email);
+    const docSnapshot = await getDoc(docRef);
+
+    if (docSnapshot.exists()) {
+      return {
+        email: docSnapshot.data().email,
+        name: docSnapshot.data().name,
+        cart: docSnapshot.data().cart,
+      };
+    } else {
+      console.log("Cart does not exist.");
+      return null;
+    }
+  } catch (error) {
+    console.error("Error getting cart:", error);
+    return null;
   }
 };

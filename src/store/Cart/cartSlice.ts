@@ -1,5 +1,10 @@
 import { PayloadAction, createSlice } from "@reduxjs/toolkit";
 import { CartItem } from "../../Home/Items";
+import {
+  AddCurrentCart,
+  DeleteCurrentCart,
+  UpdateCurrentCart,
+} from "../../firebase";
 
 export interface CartStateInterface {
   name: string | undefined;
@@ -25,6 +30,14 @@ const cartSlice = createSlice({
   name: "cart",
   initialState,
   reducers: {
+    setCart: (
+      state: CartStateInterface,
+      action: PayloadAction<CartStateInterface | null>
+    ) => {
+      state.name = action.payload?.name;
+      state.email = action.payload?.email;
+      state.cart = action.payload ? action.payload.cart : [];
+    },
     addCart: (state: CartStateInterface, action: PayloadAction<CartItem>) => {
       let found = false;
       state.cart.map((cartItem) => {
@@ -32,11 +45,12 @@ const cartSlice = createSlice({
           found = true;
           cartItem.number++;
         }
-        return 0;
       });
+
       if (!found) {
         state.cart.push({ ...action.payload, number: 1 });
       }
+      AddCurrentCart(state, state.email);
     },
     increaseCount: (
       state: CartStateInterface,
@@ -48,6 +62,7 @@ const cartSlice = createSlice({
         }
         return 0;
       });
+      UpdateCurrentCart(state, state.email);
     },
     decreaseCount: (
       state: CartStateInterface,
@@ -63,6 +78,7 @@ const cartSlice = createSlice({
         }
         return 0;
       });
+      UpdateCurrentCart(state, state.email);
     },
     removeItemFromCart: (
       state: CartStateInterface,
@@ -78,21 +94,25 @@ const cartSlice = createSlice({
           return;
         }
       });
+      UpdateCurrentCart(state, state.email);
     },
     clearCart: (state: CartStateInterface) => {
       state.cart = [];
+      DeleteCurrentCart(state.email);
     },
     setName: (
       state: CartStateInterface,
       action: PayloadAction<string | undefined>
     ) => {
       state.name = action.payload;
+      UpdateCurrentCart(state, state.email);
     },
     setEmail: (
       state: CartStateInterface,
       action: PayloadAction<string | undefined>
     ) => {
       state.email = action.payload;
+      UpdateCurrentCart(state, state.email);
     },
   },
 });
@@ -100,6 +120,7 @@ const cartSlice = createSlice({
 export default cartSlice.reducer;
 
 export const {
+  setCart,
   addCart,
   setName,
   setEmail,
