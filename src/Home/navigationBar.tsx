@@ -12,6 +12,7 @@ const NavigateBarComponent = () => {
 
     cartData.map((eachItem) => {
         items = items + eachItem.number
+        return items
     })
 
     const dispatch = useDispatch()
@@ -27,7 +28,7 @@ const NavigateBarComponent = () => {
 
     return (
         <>
-            <nav className="bg-gray-800 py-8 mb-4 sticky top-0">
+            <nav className="bg-gray-800 py-8 mb-4 sticky top-0 z-10">
                 <div className="container mx-auto flex items-center justify-between px-4">
                     <div>
                         <div className="text-white text-lg font-semibold">E-commerce</div>

@@ -1,19 +1,35 @@
 import React, { useState } from 'react';
 import { signinAuthUserWithEmailAndPassword } from '../firebase';
+import { useMutation } from 'react-query';
+import { FirebaseError } from 'firebase/app';
 
-const LoginComponent: React.FC = () => {
+const LoginComponent: React.FC<{ refetch: () => void }> = ({ refetch }) => {
 
     const [emailLogin, setEmailLogin] = useState<string>('');
     const [passwordLogin, setPasswordLogin] = useState<string>('');
+
+    const createUserLoginMiuation = useMutation((credentials: {
+        email: string,
+        password: string
+    }) => signinAuthUserWithEmailAndPassword(credentials.email, credentials.password)
+    )
+
     const handleSubmitLogin = async (e: React.FormEvent) => {
         e.preventDefault()
-        console.log(emailLogin, passwordLogin)
+        // console.log(emailLogin, passwordLogin)
         try {
-            await signinAuthUserWithEmailAndPassword(emailLogin, passwordLogin)
-        } catch (error) {
-            console.log(error)
+            await createUserLoginMiuation.mutateAsync({
+                email: emailLogin, password: passwordLogin
+            })
+
+            refetch()
+        } catch (error: unknown) {
+            if (error instanceof FirebaseError) {
+                alert(error.code)
+            }
         }
     }
+
     return (
         <>
             <div className="flex">

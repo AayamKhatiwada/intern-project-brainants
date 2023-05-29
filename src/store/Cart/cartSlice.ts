@@ -45,6 +45,7 @@ const cartSlice = createSlice({
           found = true;
           cartItem.number++;
         }
+        return 0;
       });
 
       if (!found) {

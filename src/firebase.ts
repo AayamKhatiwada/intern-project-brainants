@@ -112,7 +112,7 @@ export const signinAuthUserWithEmailAndPassword = async (
     return;
   }
 
-  signInWithEmailAndPassword(auth, email, password);
+  return signInWithEmailAndPassword(auth, email, password);
 };
 
 export const getUserData = async (uid: string) => {
