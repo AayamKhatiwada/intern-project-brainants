@@ -1,19 +1,37 @@
 import { useState } from 'react'
 import { createAuthUserWithEmailAndPassword, createUserDocumentFromAuth, signInWithGooglePopup } from '../firebase';
 import { FirebaseError } from '@firebase/util'
+import { useMutation } from 'react-query';
 
-const RegisterComponent = () => {
+const RegisterComponent: React.FC<{ refetch: () => void }> = ({ refetch }) => {
     const [nameRegister, setNameRegister] = useState<string>('');
     const [emailRegister, setEmailRegister] = useState<string>('');
     const [passwordRegister, setPasswordRegister] = useState<string>('');
+
+    const createUserMutation = useMutation((credentials: { email: string; password: string; name: string }) =>
+        createAuthUserWithEmailAndPassword(credentials.email, credentials.password)
+            .then((userCredential: any) => {
+                const { user } = userCredential;
+                return createUserDocumentFromAuth(user, credentials.name);
+            })
+    );
 
     const handleSubmitRegister = async (e: React.FormEvent) => {
         e.preventDefault()
         // console.log(email, password)
         try {
-            const { user }: any = await createAuthUserWithEmailAndPassword(emailRegister, passwordRegister)
-            await createUserDocumentFromAuth(user, nameRegister)
+            // const { user }: any = await createAuthUserWithEmailAndPassword(emailRegister, passwordRegister)
             // console.log(user)
+            // await createUserDocumentFromAuth(user, nameRegister)
+
+            await createUserMutation.mutateAsync({
+                email: emailRegister,
+                password: passwordRegister,
+                name: nameRegister,
+            });
+
+            refetch()
+
         } catch (error: unknown) {
             if (error instanceof FirebaseError) {
                 if (error.code === "auth/email-already-in-use") {
