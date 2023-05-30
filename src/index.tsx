@@ -2,10 +2,9 @@ import React from 'react';
 import ReactDOM from 'react-dom/client';
 import App from './App';
 import reportWebVitals from './reportWebVitals';
-import { Provider } from 'react-redux';
-import store from './store/store';
 import { BrowserRouter } from 'react-router-dom';
 import { QueryClient, QueryClientProvider } from 'react-query';
+import AppProvider from './Context/AppContext';
 
 // Create a client
 const queryClient = new QueryClient()
@@ -16,11 +15,11 @@ const root = ReactDOM.createRoot(
 root.render(
   <React.StrictMode>
     <BrowserRouter>
-      <Provider store={store}>
+      <AppProvider>
         <QueryClientProvider client={queryClient}>
           <App />
         </QueryClientProvider>
-      </Provider>
+      </AppProvider>
     </BrowserRouter>
   </React.StrictMode>
 );

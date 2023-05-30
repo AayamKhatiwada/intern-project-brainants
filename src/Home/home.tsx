@@ -1,13 +1,20 @@
-import { useSelector } from "react-redux";
-import { RootInterface } from "../store/store";
 import { Data } from "../firebase";
 import NavigateBarComponent from "./navigationBar";
 import { useNavigate } from "react-router-dom";
+import { useContext } from "react";
+import { UserContext, UserContextInterface } from "../Context/UserContext";
+import { ShopContext, ShopContextInterface } from "../Context/ShopContext";
 
 const HomeComponent = () => {
 
-    const isLoading = useSelector((state: RootInterface) => state.user.loading)
-    const shopData = useSelector((state: RootInterface) => state.shop.shop)
+    // const isLoading = useSelector((state: RootInterface) => state.user.loading)
+
+    const { userState } = useContext<UserContextInterface>(UserContext);
+    const isLoading = userState.loading
+
+    // const shopData = useSelector((state: RootInterface) => state.shop.shop)
+    const { shopState } = useContext<ShopContextInterface>(ShopContext);
+    const shopData = shopState.shop
 
     const navigate = useNavigate()
 

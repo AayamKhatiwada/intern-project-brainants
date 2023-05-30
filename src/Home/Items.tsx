@@ -1,9 +1,9 @@
-import { useDispatch, useSelector } from "react-redux";
 import { Data } from "../firebase";
-import { RootInterface } from "../store/store";
-import { addCart, setEmail, setName } from "../store/Cart/cartSlice";
 import { useParams } from "react-router-dom";
-import { useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
+import { UserContext, UserContextInterface } from "../Context/UserContext";
+import { CartContext, CartContextInterface } from "../Context/CartContext";
+import { ShopContext, ShopContextInterface } from "../Context/ShopContext";
 
 export interface CartItem {
     id: number;
@@ -14,18 +14,27 @@ export interface CartItem {
 
 const Items: React.FC = () => {
 
-    const dispatch = useDispatch()
+    // const dispatch = useDispatch()
     const { category } = useParams()
 
-    const currentUser = useSelector((state: RootInterface) => state.user.user)
-    const shop = useSelector((state: RootInterface) => state.shop.shop)
+    // const currentUser = useSelector((state: RootInterface) => state.user.user)
+    const { userState } = useContext<UserContextInterface>(UserContext);
+    const currentUser = userState.user
+
+    // const cartdata = useSelector((state: RootInterface) => state.cart)
+    const { addCart, setEmail, setName, cartState } = useContext<CartContextInterface>(CartContext);
+    const cartdata = cartState
+
+    // const shop = useSelector((state: RootInterface) => state.shop.shop)
+    const { shopState } = useContext<ShopContextInterface>(ShopContext);
+    const shop = shopState.shop
+
     const [categories, setCategories] = useState<Data[] | null | undefined>([])
-    const cartdata = useSelector((state: RootInterface) => state.cart)
 
     const addToCart = (item: CartItem) => {
-        !cartdata.name && dispatch(setName(currentUser?.displayName))
-        !cartdata.email && dispatch(setEmail(currentUser?.email))
-        dispatch(addCart(item))
+        !cartdata.name && setName(currentUser?.displayName)
+        !cartdata.email && setEmail(currentUser?.email)
+        addCart(item)
     }
 
     useEffect(() => {

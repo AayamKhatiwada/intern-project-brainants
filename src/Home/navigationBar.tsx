@@ -1,13 +1,18 @@
-import { useDispatch, useSelector } from "react-redux";
-import { RootInterface } from "../store/store";
 import { useLocation, useNavigate } from "react-router-dom";
 import { signOutUser } from "../firebase";
-import { removeUser } from "../store/User/userSlice";
+import { useContext } from "react";
+import { UserContext, UserContextInterface } from "../Context/UserContext";
+import { CartContext, CartContextInterface } from "../Context/CartContext";
 
 const NavigateBarComponent = () => {
 
-    const currentUser = useSelector((state: RootInterface) => state.user.user)
-    const cartData = useSelector((state: RootInterface) => state.cart.cart)
+    // const currentUser = useSelector((state: RootInterface) => state.user.user)
+    const { userState, removeUser } = useContext<UserContextInterface>(UserContext);
+    const currentUser = userState.user
+
+    // const cartData = useSelector((state: RootInterface) => state.cart.cart)
+    const { cartState } = useContext<CartContextInterface>(CartContext);
+    const cartData = cartState.cart
     let items = 0
 
     cartData.map((eachItem) => {
@@ -15,13 +20,12 @@ const NavigateBarComponent = () => {
         return items
     })
 
-    const dispatch = useDispatch()
     const navigate = useNavigate()
     const location = useLocation()
 
     const handleSignOut = () => {
         signOutUser().then(() => {
-            dispatch(removeUser())
+            removeUser()
             navigate('/')
         })
     }
