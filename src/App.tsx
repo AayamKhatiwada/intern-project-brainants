@@ -1,41 +1,43 @@
-import React from 'react';
+import React, { useContext } from 'react';
 import firebase from "firebase/auth";
 import { ReadCurrentCart, checkUser, getCategoriesFromFirebase, getUserData } from './firebase';
 // import DATA from './data';
 import LoginComponent from './Login/login.component';
 import RegisterComponent from './Register/register.component';
-import { useDispatch, useSelector } from 'react-redux';
-import { addUser, isLoading } from './store/User/userSlice';
-import { RootInterface } from './store/store';
 import HomeComponent from './Home/home';
-import { addShop } from './store/Shop/shopSlice';
 import { Route, Routes } from 'react-router-dom';
 import './App.css'
 import CartComponent from './Home/cart';
 import NavigateBarComponent from './Home/navigationBar';
 import ProductRoute from './routes/product.route';
-import { setCart } from './store/Cart/cartSlice';
 import { useQuery } from 'react-query';
 import PrivateRoute from './Reuseables/privateRoute';
+import { UserContext, UserContextInterface } from './Context/UserContext';
+import { CartContext, CartContextInterface } from './Context/CartContext';
+import { ShopContext, ShopContextInterface } from './Context/ShopContext';
 
 const App: React.FC = () => {
-  const dispatch = useDispatch()
-  const currentUser = useSelector((state: RootInterface) => state.user.user)
+  // const currentUser = useSelector((state: RootInterface) => state.user.user)
+  const { userState, setUser, setLoading } = useContext<UserContextInterface>(UserContext);
+  const currentUser = userState.user
+
+  const { setCart } = useContext<CartContextInterface>(CartContext);
+  const { setShopData } = useContext<ShopContextInterface>(ShopContext);
 
   const { refetch } = useQuery("fetchAllData", () => checkUser(async (userLog: firebase.User | null) => {
     if (userLog) {
-      dispatch(isLoading(true))
+      setLoading(true)
 
       const userData = await getUserData(userLog.uid)
-      dispatch(addUser(userData))
+      setUser(userData)
 
       const categories = await getCategoriesFromFirebase()
-      dispatch(addShop(categories))
+      setShopData(categories)
 
       const cart = await ReadCurrentCart(userData?.email)
-      dispatch(setCart(cart))
+      setCart(cart)
 
-      dispatch(isLoading(false))
+      setLoading(false)
 
     } else {
       // console.log("No Current User")

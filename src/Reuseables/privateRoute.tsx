@@ -1,11 +1,13 @@
-import React from 'react';
-import { useSelector } from 'react-redux';
+import React, { useContext } from 'react';
 import { Navigate } from 'react-router-dom';
-import { RootInterface } from '../store/store';
+import { UserContext, UserContextInterface } from '../Context/UserContext';
 
 const PrivateRoute: React.FC<{ children: React.ReactNode }> = ({ children }) => {
 
-  const isAuthenticated = useSelector((state: RootInterface) => state.user.user);
+  // const isAuthenticated = useSelector((state: RootInterface) => state.user.user);
+
+  const { userState } = useContext<UserContextInterface>(UserContext);
+  const isAuthenticated = userState.user
 
   return (
     isAuthenticated ? (

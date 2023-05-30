@@ -1,33 +1,31 @@
-import { useDispatch, useSelector } from "react-redux";
-import { RootInterface } from "../store/store";
-import { clearCart, decreaseCount, increaseCount, removeItemFromCart } from "../store/Cart/cartSlice";
 import { submitCartToFirebase } from "../firebase";
 import { useNavigate } from "react-router-dom";
+import { useContext } from "react";
+import { CartContext, CartContextInterface } from "../Context/CartContext";
 
 const CartComponent = () => {
 
-    const dispatch = useDispatch()
     const navigate = useNavigate()
     let total = 0
 
-    const cart = useSelector((state: RootInterface) => state.cart)
-    // console.log(cart)
+    const { cartState, increaseCount, decreaseCount, removeItemFromCart, clearCart } = useContext<CartContextInterface>(CartContext);
+    const cart = cartState
 
     const increaseItem = (name: string) => {
-        dispatch(increaseCount(name))
+        increaseCount(name)
     }
 
     const decreaseItem = (name: string) => {
-        dispatch(decreaseCount(name))
+        decreaseCount(name)
     }
 
     const removeItem = (name: string) => {
-        dispatch(removeItemFromCart(name))
+        removeItemFromCart(name)
     }
 
     const submitToFirebase = () => {
         submitCartToFirebase(cart)
-        dispatch(clearCart())
+        clearCart()
         navigate('/')
     }
 

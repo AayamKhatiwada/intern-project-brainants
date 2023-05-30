@@ -18,7 +18,7 @@ import {
   signInWithEmailAndPassword,
   createUserWithEmailAndPassword,
 } from "firebase/auth";
-import { CartStateInterface } from "./store/Cart/cartSlice";
+import { CartStateInterface } from "./Context/CartContext";
 // TODO: Add SDKs for Firebase products that you want to use
 // https://firebase.google.com/docs/web/setup#available-libraries
 
