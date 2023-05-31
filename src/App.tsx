@@ -38,7 +38,7 @@ const App: React.FC = () => {
       dispatch(isLoading(false))
 
     } else {
-      // console.log("No Current User")
+      console.log("No Current User")
     }
   }),
     {

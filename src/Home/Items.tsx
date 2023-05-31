@@ -48,13 +48,13 @@ const Items: React.FC = () => {
                         {
                             categories.map((category) =>
                                 <div className="my-10" key={category.title}>
-                                    <h1 className="text-center text-3xl">{category.title[0].toUpperCase() + category.title.substring(1)}</h1>
+                                    <h1 className="text-center text-3xl text-led font-item-head font-bold">{category.title[0].toUpperCase() + category.title.substring(1)}</h1>
                                     <div className="flex justify-around	flex-wrap gap-2">
                                         {
                                             category.items.map((item) => {
                                                 return (
                                                     <div key={item.id} className="w-1/5 flex flex-col items-center my-5">
-                                                        <div className="text-2xl p-2">{item.name}</div>
+                                                        <div className="text-2xl p-2 font-item-titles">{item.name}</div>
                                                         <img src={item.imageUrl} alt={item.name} style={{ height: "20rem", width: "15rem", objectFit: "cover" }} />
                                                         <div className="text-lg py-2">Price: {item.price}</div>
                                                         <button onClick={() => addToCart(item)} className="bg-blue-500 text-white px-4 py-2 hover:bg-blue-600">Add to cart</button>

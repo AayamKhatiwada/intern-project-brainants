@@ -36,14 +36,14 @@ const CartComponent = () => {
             {
                 cart.cart.length !== 0 ? (
                     <>
-                        <div className="text-3xl my-3">Cart</div>
+                        <div className="text-3xl my-3 font-cart-head">Cart</div>
                         <div className="flex justify-around	flex-wrap gap-4">
                             {
                                 cart.cart.map((cartItem) => {
                                     total = total + (cartItem.price * cartItem.number)
                                     return (
                                         <div key={cartItem.id} className="w-1/5 flex flex-col items-center my-5">
-                                            <div className="text-2xl p-2">{cartItem.name}</div>
+                                            <div className="text-2xl p-2 font-cart-titles">{cartItem.name}</div>
                                             <img src={cartItem.imageUrl} alt={cartItem.name} style={{ height: "20rem", width: "15rem", objectFit: "cover" }} />
                                             <div>Pieces: {cartItem.number}</div>
                                             <div>Price per piece: {cartItem.price}</div>
