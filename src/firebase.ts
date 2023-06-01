@@ -19,6 +19,8 @@ import {
   createUserWithEmailAndPassword,
 } from "firebase/auth";
 import { CartStateInterface } from "./store/Cart/cartSlice";
+import { getDownloadURL, getStorage, ref, uploadBytes } from "firebase/storage";
+
 // TODO: Add SDKs for Firebase products that you want to use
 // https://firebase.google.com/docs/web/setup#available-libraries
 
@@ -36,6 +38,7 @@ const firebaseConfig = {
 
 // Initialize Firebase
 export const app = initializeApp(firebaseConfig);
+export const storage = getStorage(app);
 
 const provider = new GoogleAuthProvider();
 provider.setCustomParameters({
@@ -77,11 +80,12 @@ export const createUserDocumentFromAuth = async (
   // console.log(userSnapshot);
   // console.log(userSnapshot.exists());
 
-  const { email } = userAuth;
+  const { email, uid } = userAuth;
   const createdAt = new Date();
   if (!userSnapshot.exists()) {
     try {
       await setDoc(userDocRef, {
+        uid,
         email,
         createdAt,
         displayName,
@@ -90,7 +94,7 @@ export const createUserDocumentFromAuth = async (
       console.log("error in creating user", error.message);
     }
   }
-  return { email, createdAt, displayName };
+  return { uid, email, createdAt, displayName };
 };
 
 export const createAuthUserWithEmailAndPassword = async (
@@ -124,6 +128,7 @@ export const getUserData = async (uid: string) => {
       return {
         displayName: docSnapshot.data().displayName,
         email: docSnapshot.data().email,
+        uid: docSnapshot.data().uid,
       };
     } else {
       console.log("User does not exist.");
@@ -210,10 +215,10 @@ export const submitCartToFirebase = async (data: CartStateInterface) => {
 
 export const AddCurrentCart = async (
   data: CartStateInterface,
-  email: string | undefined
+  uid: string | undefined
 ) => {
   try {
-    const docRef = doc(db, "currentcart", email ? email : "null");
+    const docRef = doc(db, "currentcart", uid ? uid : "null");
     await setDoc(docRef, data);
 
     console.log("Data added successfully to current Cart");
@@ -224,10 +229,10 @@ export const AddCurrentCart = async (
 
 export const UpdateCurrentCart = async (
   data: CartStateInterface,
-  email: string | undefined
+  uid: string | undefined
 ) => {
   try {
-    const docRef = doc(db, "currentcart", email ? email : "null");
+    const docRef = doc(db, "currentcart", uid ? uid : "null");
     await updateDoc(docRef, { cart: data.cart });
 
     console.log("Data updated successfully to current Cart");
@@ -236,9 +241,9 @@ export const UpdateCurrentCart = async (
   }
 };
 
-export const DeleteCurrentCart = async (email: string | undefined) => {
+export const DeleteCurrentCart = async (uid: string | undefined) => {
   try {
-    const docRef = doc(db, "currentcart", email ? email : "null");
+    const docRef = doc(db, "currentcart", uid ? uid : "null");
     await deleteDoc(docRef);
 
     console.log("Data deleted successfully to current Cart");
@@ -247,13 +252,14 @@ export const DeleteCurrentCart = async (email: string | undefined) => {
   }
 };
 
-export const ReadCurrentCart = async (email: string) => {
+export const ReadCurrentCart = async (uid: string) => {
   try {
-    const docRef = doc(db, "currentcart", email);
+    const docRef = doc(db, "currentcart", uid);
     const docSnapshot = await getDoc(docRef);
 
     if (docSnapshot.exists()) {
       return {
+        uid: docSnapshot.data().uid,
         email: docSnapshot.data().email,
         name: docSnapshot.data().name,
         cart: docSnapshot.data().cart,
@@ -265,5 +271,57 @@ export const ReadCurrentCart = async (email: string) => {
   } catch (error) {
     console.error("Error getting cart:", error);
     return null;
+  }
+};
+
+export const UploadImage = async (uid: string, imageUpload: File) => {
+  try {
+    const imageRef = ref(storage, `images/${uid + "_user_profile"}`);
+    uploadBytes(imageRef, imageUpload);
+  } catch (error) {
+    console.error(error);
+  }
+};
+
+export const UpdateUser = async (
+  uid: string | undefined,
+  name: string,
+  imageUpload: File | null
+) => {
+  try {
+    if (uid === undefined) return;
+    const docRef = doc(db, "users", uid);
+    !!imageUpload && UploadImage(uid, imageUpload);
+    await updateDoc(docRef, {
+      displayName: name,
+    });
+
+    console.log("User updated successful");
+  } catch (error) {
+    console.error(error);
+  }
+};
+
+export const getUserImage = (
+  uid: string | undefined
+): Promise<string | null> => {
+  try {
+    if (uid === undefined) {
+      console.log("Uid is undefined");
+      return Promise.resolve(null);
+    }
+
+    const imagesRef = ref(storage, `images/${uid}_user_profile`);
+    return getDownloadURL(imagesRef)
+      .then((url) => {
+        return url;
+      })
+      .catch((error) => {
+        console.error(error);
+        return null;
+      });
+  } catch (error) {
+    console.error(error);
+    return Promise.resolve(null);
   }
 };
