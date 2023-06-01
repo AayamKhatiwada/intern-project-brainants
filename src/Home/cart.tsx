@@ -36,7 +36,7 @@ const CartComponent = () => {
             {
                 cart.cart.length !== 0 ? (
                     <>
-                        <div className="text-3xl my-3 font-cart-head">Cart</div>
+                        <div className="text-3xl my-3 font-cart-head text-center">Cart</div>
                         <div className="flex justify-around	flex-wrap gap-4">
                             {
                                 cart.cart.map((cartItem) => {
@@ -58,14 +58,16 @@ const CartComponent = () => {
                                 })
                             }
                         </div>
-                        <div className="text-2xl">Total price: {total}</div>
-                        <button onClick={submitToFirebase} className="bg-blue-500 hover:bg-blue-600 text-white font-bold py-2 px-4 my-5 border border-blue-700 rounded">
-                            Buy
-                        </button>
+                        <div className="text-2xl text-center">Total price: {total}</div>
+                        <div className="text-center">
+                            <button onClick={submitToFirebase} className="bg-blue-500 hover:bg-blue-600 text-white font-bold py-2 px-4 my-5 border border-blue-700 rounded text-center">
+                                Buy
+                            </button>
+                        </div>
                     </>
                 )
                     :
-                    <div>There is nothing to look in the cart</div>
+                    <div className="text-center">There is nothing to look in the cart</div>
             }
         </div>
     )

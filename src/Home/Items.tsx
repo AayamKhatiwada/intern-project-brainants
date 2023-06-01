@@ -1,7 +1,7 @@
 import { useDispatch, useSelector } from "react-redux";
 import { Data } from "../firebase";
 import { RootInterface } from "../store/store";
-import { addCart, setEmail, setName } from "../store/Cart/cartSlice";
+import { addCart, setEmail, setName, setUid } from "../store/Cart/cartSlice";
 import { useParams } from "react-router-dom";
 import { useEffect, useState } from "react";
 
@@ -25,6 +25,7 @@ const Items: React.FC = () => {
     const addToCart = (item: CartItem) => {
         !cartdata.name && dispatch(setName(currentUser?.displayName))
         !cartdata.email && dispatch(setEmail(currentUser?.email))
+        !cartdata.uid && dispatch(setUid(currentUser?.uid))
         dispatch(addCart(item))
     }
 

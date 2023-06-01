@@ -7,6 +7,7 @@ import {
 } from "../../firebase";
 
 export interface CartStateInterface {
+  uid: string | undefined;
   name: string | undefined;
   email: string | undefined;
   cart: CartItemNumber[];
@@ -21,6 +22,7 @@ export interface CartItemNumber {
 }
 
 const initialState: CartStateInterface = {
+  uid: undefined,
   name: undefined,
   email: undefined,
   cart: [],
@@ -36,6 +38,7 @@ const cartSlice = createSlice({
     ) => {
       state.name = action.payload?.name;
       state.email = action.payload?.email;
+      state.uid = action.payload?.uid;
       state.cart = action.payload ? action.payload.cart : [];
     },
     addCart: (state: CartStateInterface, action: PayloadAction<CartItem>) => {
@@ -51,7 +54,7 @@ const cartSlice = createSlice({
       if (!found) {
         state.cart.push({ ...action.payload, number: 1 });
       }
-      AddCurrentCart(state, state.email);
+      AddCurrentCart(state, state.uid);
     },
     increaseCount: (
       state: CartStateInterface,
@@ -63,7 +66,7 @@ const cartSlice = createSlice({
         }
         return 0;
       });
-      UpdateCurrentCart(state, state.email);
+      UpdateCurrentCart(state, state.uid);
     },
     decreaseCount: (
       state: CartStateInterface,
@@ -79,7 +82,7 @@ const cartSlice = createSlice({
         }
         return 0;
       });
-      UpdateCurrentCart(state, state.email);
+      UpdateCurrentCart(state, state.uid);
     },
     removeItemFromCart: (
       state: CartStateInterface,
@@ -95,25 +98,32 @@ const cartSlice = createSlice({
           return;
         }
       });
-      UpdateCurrentCart(state, state.email);
+      UpdateCurrentCart(state, state.uid);
     },
     clearCart: (state: CartStateInterface) => {
       state.cart = [];
-      DeleteCurrentCart(state.email);
+      DeleteCurrentCart(state.uid);
     },
     setName: (
       state: CartStateInterface,
       action: PayloadAction<string | undefined>
     ) => {
       state.name = action.payload;
-      UpdateCurrentCart(state, state.email);
+      UpdateCurrentCart(state, state.uid);
     },
     setEmail: (
       state: CartStateInterface,
       action: PayloadAction<string | undefined>
     ) => {
       state.email = action.payload;
-      UpdateCurrentCart(state, state.email);
+      UpdateCurrentCart(state, state.uid);
+    },
+    setUid: (
+      state: CartStateInterface,
+      action: PayloadAction<string | undefined>
+    ) => {
+      state.uid = action.payload;
+      UpdateCurrentCart(state, state.uid);
     },
   },
 });
@@ -125,6 +135,7 @@ export const {
   addCart,
   setName,
   setEmail,
+  setUid,
   increaseCount,
   decreaseCount,
   removeItemFromCart,

@@ -8,6 +8,8 @@ export interface UserStateInterface {
 interface UserInterface {
   displayName: string;
   email: string;
+  uid: string;
+  image: string | null;
 }
 
 const initialState: UserStateInterface = {

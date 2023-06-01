@@ -45,6 +45,7 @@ const RegisterComponent: React.FC<{ refetch: () => void }> = ({ refetch }) => {
         try {
             const { user } = await signInWithGooglePopup();
             await createUserDocumentFromAuth(user, user.displayName)
+            refetch()
         } catch (error: unknown) {
             if (error instanceof FirebaseError) {
                 if (error.code === "auth/popup-closed-by-user") {
