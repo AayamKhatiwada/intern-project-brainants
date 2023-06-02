@@ -3,6 +3,7 @@ import { RootInterface } from "../store/store";
 import { useLocation, useNavigate } from "react-router-dom";
 import { signOutUser } from "../firebase";
 import { removeUser } from "../store/User/userSlice";
+import { SuccessNoty } from "../Reuseables/notifications";
 
 const NavigateBarComponent = () => {
 
@@ -22,6 +23,7 @@ const NavigateBarComponent = () => {
     const handleSignOut = () => {
         signOutUser().then(() => {
             dispatch(removeUser())
+            SuccessNoty("Logout successful", 3000)
         })
     }
 

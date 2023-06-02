@@ -4,6 +4,7 @@ import { useState } from "react";
 import { UpdateUser } from "../firebase";
 import { setName } from "../store/Cart/cartSlice";
 import { useForm, SubmitHandler } from "react-hook-form";
+import { SuccessNoty } from "../Reuseables/notifications";
 
 interface Inputs {
     name: string,
@@ -27,6 +28,7 @@ const ProfileComponent: React.FC<{ refetch: () => void }> = ({ refetch }) => {
         UpdateUser(user?.uid, name, imageUpload)
 
         refetch()
+        SuccessNoty("Profile update successful", 3000)
     }
 
     // console.log(profileImage)

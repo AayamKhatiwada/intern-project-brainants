@@ -112,11 +112,15 @@ export const signinAuthUserWithEmailAndPassword = async (
   email: string,
   password: string
 ) => {
-  if (!email && !password) {
-    return;
-  }
+  try {
+    // if (!email && !password) {
+    //   return;
+    // }
 
-  return signInWithEmailAndPassword(auth, email, password);
+    return signInWithEmailAndPassword(auth, email, password);
+  } catch (error) {
+    console.log(error);
+  }
 };
 
 export const getUserData = async (uid: string) => {
@@ -131,7 +135,7 @@ export const getUserData = async (uid: string) => {
         uid: docSnapshot.data().uid,
       };
     } else {
-      console.log("User does not exist.");
+      // console.log("User does not exist.");
       return null;
     }
   } catch (error) {
@@ -158,7 +162,7 @@ export const addDataToFirebase = async (data: Data[]) => {
       await setDoc(docRef, category);
     }
     // await addDoc(collectionRef, data);
-    console.log("Data added successfully!");
+    // console.log("Data added successfully!");
   } catch (error) {
     console.error("Error adding data:", error);
   }
@@ -190,7 +194,7 @@ export const getCategoryFromFirebaseByName = async (documentName: string) => {
     if (docSnapshot.exists()) {
       console.log(docSnapshot.data());
     } else {
-      console.log("Category does not exist.");
+      // console.log("Category does not exist.");
       return null;
     }
   } catch (error) {
@@ -207,7 +211,7 @@ export const submitCartToFirebase = async (data: CartStateInterface) => {
     await setDoc(docRef, { ...data, createdAt });
 
     // await addDoc(collectionRef, data);
-    console.log("Data added successfully!");
+    // console.log("Data added successfully!");
   } catch (error) {
     console.error("Error adding data:", error);
   }
@@ -221,7 +225,7 @@ export const AddCurrentCart = async (
     const docRef = doc(db, "currentcart", uid ? uid : "null");
     await setDoc(docRef, data);
 
-    console.log("Data added successfully to current Cart");
+    // console.log("Data added successfully to current Cart");
   } catch (error) {
     console.error("Error adding data:", error);
   }
@@ -235,7 +239,7 @@ export const UpdateCurrentCart = async (
     const docRef = doc(db, "currentcart", uid ? uid : "null");
     await updateDoc(docRef, { cart: data.cart });
 
-    console.log("Data updated successfully to current Cart");
+    // console.log("Data updated successfully to current Cart");
   } catch (error) {
     console.error("Error updating data:", error);
   }
@@ -246,7 +250,7 @@ export const DeleteCurrentCart = async (uid: string | undefined) => {
     const docRef = doc(db, "currentcart", uid ? uid : "null");
     await deleteDoc(docRef);
 
-    console.log("Data deleted successfully to current Cart");
+    // console.log("Data deleted successfully to current Cart");
   } catch (error) {
     console.error("Error adding data:", error);
   }
@@ -265,7 +269,7 @@ export const ReadCurrentCart = async (uid: string) => {
         cart: docSnapshot.data().cart,
       };
     } else {
-      console.log("Cart does not exist.");
+      // console.log("Cart not created");
       return null;
     }
   } catch (error) {
@@ -317,7 +321,9 @@ export const getUserImage = async (
         return url;
       })
       .catch((error) => {
-        console.log(error.code);
+        if (error.code === "storage/object-not-found") {
+          // console.log("Image not found");
+        }
         return null;
       });
   } catch (error) {

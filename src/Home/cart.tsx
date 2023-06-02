@@ -3,6 +3,7 @@ import { RootInterface } from "../store/store";
 import { clearCart, decreaseCount, increaseCount, removeItemFromCart } from "../store/Cart/cartSlice";
 import { submitCartToFirebase } from "../firebase";
 import { useNavigate } from "react-router-dom";
+import { SuccessNoty } from "../Reuseables/notifications";
 
 const CartComponent = () => {
 
@@ -29,6 +30,7 @@ const CartComponent = () => {
         submitCartToFirebase(cart)
         dispatch(clearCart())
         navigate('/')
+        SuccessNoty("Order has been placed", 3000)
     }
 
     return (
@@ -36,14 +38,14 @@ const CartComponent = () => {
             {
                 cart.cart.length !== 0 ? (
                     <>
-                        <div className="text-3xl my-3 font-cart-head text-center">Cart</div>
+                        <div className="text-3xl mt-3 font-cart-head text-center">Cart</div>
                         <div className="flex justify-around	flex-wrap gap-4">
                             {
                                 cart.cart.map((cartItem) => {
                                     total = total + (cartItem.price * cartItem.number)
                                     return (
-                                        <div key={cartItem.id} className="w-1/5 flex flex-col items-center my-5">
-                                            <div className="text-2xl p-2 font-cart-titles">{cartItem.name}</div>
+                                        <div key={cartItem.id} className="w-1/5 flex flex-col items-center mb-5">
+                                            <div className="text-2xl p-2 flex-stretch-1 h-20 flex items-end text-center mb-2 font-cart-titles">{cartItem.name}</div>
                                             <img src={cartItem.imageUrl} alt={cartItem.name} style={{ height: "20rem", width: "15rem", objectFit: "cover" }} />
                                             <div>Pieces: {cartItem.number}</div>
                                             <div>Price per piece: {cartItem.price}</div>

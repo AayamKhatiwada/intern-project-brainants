@@ -18,6 +18,7 @@ import { setCart } from './store/Cart/cartSlice';
 import { useQuery } from 'react-query';
 import PrivateRoute from './Reuseables/privateRoute';
 import ProfileComponent from './Home/profile';
+import { ToastContainer } from 'react-toastify';
 
 const App: React.FC = () => {
   const dispatch = useDispatch()
@@ -31,6 +32,7 @@ const App: React.FC = () => {
       const image = await getUserImage(userLog.uid).then((url) => {
         return url
       })
+      // console.log(image)
       dispatch(addUser({ image: image, displayName: userData?.displayName, email: userData?.email, uid: userData?.uid }))
 
       const categories = await getCategoriesFromFirebase()
@@ -86,6 +88,7 @@ const App: React.FC = () => {
           </PrivateRoute>
         } />
       </Routes>
+      <ToastContainer />
     </div >
 
   );

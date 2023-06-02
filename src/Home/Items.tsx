@@ -4,6 +4,7 @@ import { RootInterface } from "../store/store";
 import { addCart, setEmail, setName, setUid } from "../store/Cart/cartSlice";
 import { useParams } from "react-router-dom";
 import { useEffect, useState } from "react";
+import { SuccessNoty } from "../Reuseables/notifications";
 
 export interface CartItem {
     id: number;
@@ -27,6 +28,7 @@ const Items: React.FC = () => {
         !cartdata.email && dispatch(setEmail(currentUser?.email))
         !cartdata.uid && dispatch(setUid(currentUser?.uid))
         dispatch(addCart(item))
+        SuccessNoty(`${item.name} added in cart`, 1000)
     }
 
     useEffect(() => {
@@ -42,13 +44,13 @@ const Items: React.FC = () => {
     // console.log(categories)
 
     return (
-        <section>
+        <div>
             {
                 categories?.length && (
                     <>
                         {
                             categories.map((category) =>
-                                <div className="my-10" key={category.title}>
+                                <div className="mb-10" key={category.title}>
                                     <h1 className="text-center text-3xl text-led font-item-head font-bold">{category.title[0].toUpperCase() + category.title.substring(1)}</h1>
                                     <div className="flex justify-around	flex-wrap gap-2">
                                         {
@@ -70,7 +72,7 @@ const Items: React.FC = () => {
                     </>
                 )
             }
-        </section>
+        </div>
     )
 }
 
