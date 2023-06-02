@@ -1,6 +1,6 @@
 import React from 'react';
 import firebase from "firebase/auth";
-import { ReadCurrentCart, checkUser, getCategoriesFromFirebase, getUserData } from './firebase';
+import { ReadCurrentCart, checkUser, getCategoriesFromFirebase, getUserData, getUserImage } from './firebase';
 // import DATA from './data';
 import LoginComponent from './Login/login.component';
 import RegisterComponent from './Register/register.component';
@@ -17,6 +17,7 @@ import ProductRoute from './routes/product.route';
 import { setCart } from './store/Cart/cartSlice';
 import { useQuery } from 'react-query';
 import PrivateRoute from './Reuseables/privateRoute';
+import ProfileComponent from './Home/profile';
 
 const App: React.FC = () => {
   const dispatch = useDispatch()
@@ -27,12 +28,15 @@ const App: React.FC = () => {
       dispatch(isLoading(true))
 
       const userData = await getUserData(userLog.uid)
-      dispatch(addUser(userData))
+      const image = await getUserImage(userLog.uid).then((url) => {
+        return url
+      })
+      dispatch(addUser({ image: image, displayName: userData?.displayName, email: userData?.email, uid: userData?.uid }))
 
       const categories = await getCategoriesFromFirebase()
       dispatch(addShop(categories))
 
-      const cart = await ReadCurrentCart(userData?.email)
+      const cart = await ReadCurrentCart(userData?.uid)
       dispatch(setCart(cart))
 
       dispatch(isLoading(false))
@@ -73,6 +77,12 @@ const App: React.FC = () => {
           <PrivateRoute>
             <NavigateBarComponent />
             <ProductRoute />
+          </PrivateRoute>
+        } />
+        <Route path='/userProfile' element={
+          <PrivateRoute>
+            <NavigateBarComponent />
+            <ProfileComponent refetch={refetch} />
           </PrivateRoute>
         } />
       </Routes>

@@ -54,13 +54,13 @@ const Items: React.FC = () => {
                                         {
                                             category.items.map((item) => {
                                                 return (
-                                                    <div key={item.id} className="w-1/5 flex flex-col items-center my-5">
-                                                        <div className="text-2xl p-2 font-item-titles">{item.name}</div>
-                                                        <img src={item.imageUrl} alt={item.name} style={{ height: "20rem", width: "15rem", objectFit: "cover" }} />
+                                                    <div key={item.id} className="w-1/5 flex flex-col justify-between items-center">
+                                                        <div className="text-2xl p-2 font-item-titles flex-stretch-1 h-20 flex items-end text-center mb-2">{item.name}</div>
+                                                        <img src={item.imageUrl} alt={item.name} className="h-80 w-60 object-cover" />
                                                         <div className="text-lg py-2">Price: {item.price}</div>
                                                         <button onClick={() => addToCart(item)} className="bg-blue-500 text-white px-4 py-2 hover:bg-blue-600">Add to cart</button>
                                                     </div>
-                                                )
+                                                );
                                             })
                                         }
                                     </div>

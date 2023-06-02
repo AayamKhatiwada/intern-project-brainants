@@ -302,7 +302,7 @@ export const UpdateUser = async (
   }
 };
 
-export const getUserImage = (
+export const getUserImage = async (
   uid: string | undefined
 ): Promise<string | null> => {
   try {
@@ -317,7 +317,7 @@ export const getUserImage = (
         return url;
       })
       .catch((error) => {
-        console.error(error);
+        console.log(error.code);
         return null;
       });
   } catch (error) {
