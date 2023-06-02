@@ -15,7 +15,7 @@ const HomeComponent = () => {
         <>
             {
                 isLoading ? (
-                    <div className="text-8xl">Loading...</div>
+                    <div className="flex h-96 items-center justify-center text-8xl">Loading...</div>
                 ) :
                     (
                         <div>
