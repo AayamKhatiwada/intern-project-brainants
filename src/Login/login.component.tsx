@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { signinAuthUserWithEmailAndPassword } from '../firebase';
 import { useMutation } from 'react-query';
 import { FirebaseError } from 'firebase/app';
+import { ErrorNoty, SuccessNoty } from '../Reuseables/notifications';
 
 const LoginComponent: React.FC<{ refetch: () => void }> = ({ refetch }) => {
 
@@ -23,9 +24,11 @@ const LoginComponent: React.FC<{ refetch: () => void }> = ({ refetch }) => {
             })
 
             refetch()
+            SuccessNoty("Login Successfull", 1000)
+
         } catch (error: unknown) {
             if (error instanceof FirebaseError) {
-                alert(error.code)
+                ErrorNoty(error.code, 3000)
             }
         }
     }
