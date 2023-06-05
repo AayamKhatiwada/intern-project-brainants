@@ -1,3 +1,43 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+@layer base {
+    button {
+        @apply py-2 px-4 rounded
+    }
+}
+
+@layer components{
+    .btn {
+        @apply bg-blue-500 hover:bg-blue-700 text-white;
+    }
+
+    .input-field {
+        @apply border rounded w-full py-2 px-3 text-gray-700 focus:border-blue-500
+    }
+
+    .input-field-label {
+        @apply block text-gray-700 text-sm font-bold mb-2
+    }
+
+    .product-images {
+        @apply h-80 w-60 object-cover
+    }
+
+    .page-title {
+        @apply text-center text-3xl text-led font-item-head font-bold
+    }
+
+    .null-image{
+        @apply bg-blue-400 text-white rounded-full flex items-center justify-center cursor-pointer
+    }
+
+    .pointed-nav-item {
+        @apply text-white cursor-pointer
+    }
+
+    .unpointed-nav-item {
+        @apply text-gray-300 hover:text-white cursor-pointer
+    }
+}

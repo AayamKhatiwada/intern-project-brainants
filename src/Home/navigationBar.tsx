@@ -37,15 +37,17 @@ const NavigateBarComponent = () => {
                     <div>
                         <ul className="flex space-x-12 items-center">
                             <li className="text-gray-300">Welcome {currentUser?.displayName}</li>
-                            <li className={location.pathname === '/' ? "text-white cursor-pointer" : "text-gray-300 hover:text-white cursor-pointer"} onClick={() => navigate('/')}>Home</li>
-                            <li className={location.pathname === '/products' ? "text-white cursor-pointer" : "text-gray-300 hover:text-white cursor-pointer"} onClick={() => navigate('/products')}>Products</li>
-                            <li className={location.pathname === '/cart' ? "text-white cursor-pointer" : "text-gray-300 hover:text-white cursor-pointer"} onClick={() => navigate('/cart')}>Cart<sup className="px-1 py-0.5 m-1 bg-gray-500 rounded-full text-xs">{items}</sup></li>
+                            <li className={location.pathname === '/' ? "pointed-nav-item" : "unpointed-nav-item"} onClick={() => navigate('/')}>Home</li>
+                            <li className={location.pathname === '/products' ? "pointed-nav-item" : "unpointed-nav-item"} onClick={() => navigate('/products')}>Products</li>
+                            <li className={location.pathname === '/cart' ? "pointed-nav-item" : "unpointed-nav-item"} onClick={() => navigate('/cart')}>
+                                Cart <sup className="px-1 py-0.5 bg-gray-500 rounded-full text-xs">{items}</sup>
+                            </li>
                             <li className="relative group">
                                 {
                                     !!currentUser?.image ?
                                         <img src={currentUser?.image} alt="" className="rounded-full w-10 h-10 object-cover mx-auto border-solid border-2 border-black cursor-pointer" />
                                         :
-                                        <div className="bg-blue-400 text-white w-10 h-10 text-xl rounded-full flex items-center justify-center cursor-pointer">
+                                        <div className="w-10 h-10 text-xl null-image">
                                             {currentUser?.displayName ? currentUser?.displayName[0].toUpperCase() : ''}
                                         </div>
                                 }

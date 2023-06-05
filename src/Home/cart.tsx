@@ -38,7 +38,7 @@ const CartComponent = () => {
             {
                 cart.cart.length !== 0 ? (
                     <>
-                        <div className="text-3xl mt-3 font-cart-head text-center">Cart</div>
+                        <div className="page-title">Cart</div>
                         <div className="flex justify-around	flex-wrap gap-4">
                             {
                                 cart.cart.map((cartItem) => {
@@ -46,7 +46,7 @@ const CartComponent = () => {
                                     return (
                                         <div key={cartItem.id} className="w-1/5 flex flex-col items-center mb-5">
                                             <div className="text-2xl p-2 flex-stretch-1 h-20 flex items-end text-center mb-2 font-cart-titles">{cartItem.name}</div>
-                                            <img src={cartItem.imageUrl} alt={cartItem.name} style={{ height: "20rem", width: "15rem", objectFit: "cover" }} />
+                                            <img src={cartItem.imageUrl} alt={cartItem.name} className="product-images" />
                                             <div>Pieces: {cartItem.number}</div>
                                             <div>Price per piece: {cartItem.price}</div>
                                             <div>Total: {cartItem.price * cartItem.number}</div>
@@ -62,7 +62,7 @@ const CartComponent = () => {
                         </div>
                         <div className="text-2xl text-center">Total price: {total}</div>
                         <div className="text-center">
-                            <button onClick={submitToFirebase} className="bg-blue-500 hover:bg-blue-600 text-white font-bold py-2 px-4 my-5 border border-blue-700 rounded text-center">
+                            <button onClick={submitToFirebase} className="btn mt-4">
                                 Buy
                             </button>
                         </div>
