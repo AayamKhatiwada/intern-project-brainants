@@ -5,6 +5,7 @@ import { UpdateUser } from "../firebase";
 import { setName } from "../store/Cart/cartSlice";
 import { useForm, SubmitHandler } from "react-hook-form";
 import { SuccessNoty } from "../Reuseables/notifications";
+// import { useQueryClient } from "@tanstack/react-query";
 
 interface Inputs {
     name: string,
@@ -12,6 +13,7 @@ interface Inputs {
 
 const ProfileComponent: React.FC<{ refetch: () => void }> = ({ refetch }) => {
 
+    // const queryClient = useQueryClient()
     const { register, handleSubmit, formState: { errors } } = useForm<Inputs>();
 
     const dispatch = useDispatch()
@@ -27,6 +29,7 @@ const ProfileComponent: React.FC<{ refetch: () => void }> = ({ refetch }) => {
 
         UpdateUser(user?.uid, name, imageUpload)
 
+        // queryClient.invalidateQueries({ queryKey: ['fetchAllData'] })
         refetch()
         SuccessNoty("Profile update successful", 3000)
     }

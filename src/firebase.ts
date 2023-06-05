@@ -273,7 +273,7 @@ export const ReadCurrentCart = async (uid: string) => {
       return null;
     }
   } catch (error) {
-    console.error("Error getting cart:", error);
+    // console.error("Error getting cart:", error);
     return null;
   }
 };
@@ -321,13 +321,13 @@ export const getUserImage = async (
         return url;
       })
       .catch((error) => {
-        if (error.code === "storage/object-not-found") {
-          // console.log("Image not found");
-        }
+        // if (error.code === "storage/object-not-found") {
+        //   console.log("Image not found");
+        // }
         return null;
       });
   } catch (error) {
-    console.error(error);
+    // console.error(error);
     return Promise.resolve(null);
   }
 };
