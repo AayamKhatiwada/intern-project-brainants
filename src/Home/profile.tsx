@@ -42,7 +42,7 @@ const ProfileComponent: React.FC<{ refetch: () => void }> = ({ refetch }) => {
                         !!profileImage ?
                             <img src={profileImage} alt="" className="rounded-full w-80 h-80 object-cover mx-auto mb-8 border-solid border-2 border-black" />
                             :
-                            <div className="bg-blue-400 text-white w-80 h-80 text-9xl rounded-full flex items-center justify-center mx-auto mb-8">
+                            <div className="w-80 h-80 text-9xl mx-auto mb-8 null-image">
                                 {user?.displayName[0].toUpperCase()}
                             </div>
                     }
@@ -55,10 +55,10 @@ const ProfileComponent: React.FC<{ refetch: () => void }> = ({ refetch }) => {
                 </div>
                 <div className="flex-1 relative">
                     <div className="mb-4">
-                        <label className="block text-gray-700 text-sm font-bold mb-2" htmlFor="name">
+                        <label className="input-field-label" htmlFor="name">
                             Name
                         </label>
-                        <input className="border rounded w-full py-2 px-3 text-gray-700 focus:border-blue-500"
+                        <input className="input-field"
                             id="name"
                             type="text"
                             placeholder="Enter your name"
@@ -68,10 +68,10 @@ const ProfileComponent: React.FC<{ refetch: () => void }> = ({ refetch }) => {
                         {errors.name && <span className="text-red-400">This field is required</span>}
                     </div>
                     <div className="mb-4">
-                        <label className="block text-gray-700 text-sm font-bold mb-2" htmlFor="email">
+                        <label className="input-field-label" htmlFor="email">
                             Email
                         </label>
-                        <input className="border rounded w-full py-2 px-3 text-gray-700 focus:border-blue-500"
+                        <input className="input-field"
                             id="email"
                             type="email"
                             placeholder="Enter your email"
@@ -80,7 +80,7 @@ const ProfileComponent: React.FC<{ refetch: () => void }> = ({ refetch }) => {
                         />
                     </div>
 
-                    <button className="bg-blue-500 px-4 py-2 hover:bg-blue-400 rounded text-white mt-4 absolute bottom-0">Update</button>
+                    <button className="btn absolute bottom-0">Update</button>
                 </div>
             </form>
         </div>
