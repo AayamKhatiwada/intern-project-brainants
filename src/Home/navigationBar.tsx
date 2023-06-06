@@ -36,7 +36,7 @@ const NavigateBarComponent = () => {
 
     return (
         <>
-            <nav className="bg-gray-800 py-8 mb-4 sticky top-0 z-10">
+            <nav className="bg-gray-800 py-7 mb-4 sticky top-0 z-10">
                 <div className="container mx-auto flex items-center justify-between flex-wrap px-4">
                     <div>
                         <div className="text-white text-lg font-semibold">E-commerce</div>
@@ -60,7 +60,7 @@ const NavigateBarComponent = () => {
                             ></path>
                         </svg>
                     </button>
-                    <div className={`${isOpen ? '' : 'hidden'} w-full md:block md:w-auto flex space-x-12`}>
+                    <div className={`${isOpen ? '' : 'hidden'} w-full md:block md:w-auto flex mt-4`}>
                         <ul className="flex flex-col md:flex-row md:space-x-8 md:mt-0 w-full space-y-2 md:space-y-0 items-center">
                             <li className="text-gray-300">Welcome {currentUser?.displayName}</li>
                             <li className={location.pathname === '/' ? "pointed-nav-item" : "unpointed-nav-item"} onClick={() => navigate('/')}>Home</li>
