@@ -2,6 +2,12 @@
 @tailwind components;
 @tailwind utilities;
 
+.spinner_ajPY{
+    transform-origin:center;
+    animation:spinner_AtaB .75s infinite linear
+}
+@keyframes spinner_AtaB{100%{ transform: rotate(360deg) }}
+
 @layer base {
     button {
         @apply py-2 px-4 rounded
@@ -22,7 +28,7 @@
     }
 
     .product-images {
-        @apply h-80 w-60 object-cover
+        @apply h-52 w-52 md:h-72 md:w-72 lg:h-80 lg:w-60 object-cover
     }
 
     .page-title {
@@ -34,10 +40,14 @@
     }
 
     .pointed-nav-item {
-        @apply text-white cursor-pointer
+        @apply text-white cursor-pointer 
     }
 
     .unpointed-nav-item {
         @apply text-gray-300 hover:text-white cursor-pointer
     }
+
+    .cart-buttons {
+        @apply text-white font-bold py-2 px-4 rounded m-1
+    } 
 }

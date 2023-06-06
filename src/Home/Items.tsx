@@ -56,7 +56,7 @@ const Items: React.FC = () => {
                                         {
                                             category.items.map((item) => {
                                                 return (
-                                                    <div key={item.id} className="w-1/5 flex flex-col justify-between items-center">
+                                                    <div key={item.id} className="sm:w-1/3 md:w-1/4 lg:w-1/5 flex flex-col justify-between items-center">
                                                         <div className="text-2xl p-2 font-item-titles flex-stretch-1 h-20 flex items-end text-center mb-2">{item.name}</div>
                                                         <img src={item.imageUrl} alt={item.name} className="product-images" />
                                                         <div className="text-lg py-2">Price: {item.price}</div>

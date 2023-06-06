@@ -24,9 +24,9 @@ const HomeComponent = () => {
                                 {
                                     shopData?.map((category: Data) => {
                                         return (
-                                            <div key={category.id} onClick={() => navigate(`/products/${category.title}`)} className="w-1/4 relative cursor-pointer">
+                                            <div key={category.id} onClick={() => navigate(`/products/${category.title}`)} className="md:w-1/3 lg:w-1/4 relative cursor-pointer">
                                                 <img src={category.imageUrl} alt={category.title} className="product-images w-auto" />
-                                                <div className="text-6xl absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 p-3 bg-gray-300 opacity-70 font-home-titles font-bold">{category.title[0].toUpperCase() + category.title.substring(1)}</div>
+                                                <div className="text-3xl sm:text-5xl md:text-6xl absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 p-3 bg-gray-300 opacity-70 font-home-titles font-bold">{category.title[0].toUpperCase() + category.title.substring(1)}</div>
                                             </div>
                                         )
                                     })
