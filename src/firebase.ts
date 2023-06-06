@@ -300,7 +300,7 @@ export const UpdateUser = async (
       displayName: name,
     });
 
-    console.log("User updated successful");
+    // console.log("User updated successful");
   } catch (error) {
     console.error(error);
   }

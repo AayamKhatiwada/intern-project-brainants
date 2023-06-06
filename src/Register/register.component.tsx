@@ -3,6 +3,7 @@ import { FirebaseError } from '@firebase/util'
 import { SubmitHandler, useForm } from 'react-hook-form';
 import { ErrorNoty, SuccessNoty } from '../Reuseables/notifications';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
+import { useState } from 'react';
 
 interface Inputs {
     name: string,
@@ -15,6 +16,8 @@ const RegisterComponent = () => {
     const queryClient = useQueryClient()
     const { register, handleSubmit, formState: { errors } } = useForm<Inputs>();
 
+    const [isLoading, setIsLoading] = useState(false)
+
     const createAuthUserMutation = useMutation((credentials: { email: string; password: string; name: string }) =>
         createAuthUserWithEmailAndPassword(credentials.email, credentials.password)
             .then(async (userCredential: any) => {
@@ -25,6 +28,7 @@ const RegisterComponent = () => {
                     ErrorNoty("Email already in used", 3000)
                     return error
                 }
+                setIsLoading(false)
             }),
     );
 
@@ -34,10 +38,12 @@ const RegisterComponent = () => {
             SuccessNoty("Register Successfull", 1000)
         }).catch(() => {
             ErrorNoty("Error create a document", 5000)
+            setIsLoading(false)
         })
     )
 
     const handleSubmitRegister: SubmitHandler<Inputs> = async (data) => {
+        setIsLoading(true)
         const { name, email, password } = data
 
         try {
@@ -55,6 +61,7 @@ const RegisterComponent = () => {
 
         } catch (error: unknown) {
             console.log(error)
+            setIsLoading(false)
         }
     }
 
@@ -106,6 +113,12 @@ const RegisterComponent = () => {
                     </div>
                     <button className="btn" type="submit">
                         Register
+                        {
+                            isLoading &&
+                            <span>
+                                <svg width="24" height="24" viewBox="0 0 24 24" style={{ display: "inherit" }}><path d="M12,1A11,11,0,1,0,23,12,11,11,0,0,0,12,1Zm0,19a8,8,0,1,1,8-8A8,8,0,0,1,12,20Z" opacity=".25" /><path d="M10.14,1.16a11,11,0,0,0-9,8.92A1.59,1.59,0,0,0,2.46,12,1.52,1.52,0,0,0,4.11,10.7a8,8,0,0,1,6.66-6.61A1.42,1.42,0,0,0,12,2.69h0A1.57,1.57,0,0,0,10.14,1.16Z" className="spinner_ajPY" /></svg>
+                            </span>
+                        }
                     </button>
                 </form>
                 <button onClick={() => signIn()} className="bg-gray-400 hover:bg-gray-500 text-white px-4 py-2 rounded mt-2">Google</button>

@@ -44,16 +44,16 @@ const CartComponent = () => {
                                 cart.cart.map((cartItem) => {
                                     total = total + (cartItem.price * cartItem.number)
                                     return (
-                                        <div key={cartItem.id} className="w-1/5 flex flex-col items-center mb-5">
+                                        <div key={cartItem.id} className="w-1/2 sm:w-1/3 md:w-1/4 lg:w-1/5 flex flex-col items-center mb-5">
                                             <div className="text-2xl p-2 flex-stretch-1 h-20 flex items-end text-center mb-2 font-cart-titles">{cartItem.name}</div>
                                             <img src={cartItem.imageUrl} alt={cartItem.name} className="product-images" />
                                             <div>Pieces: {cartItem.number}</div>
-                                            <div>Price per piece: {cartItem.price}</div>
+                                            <div className="text-center">Price per piece: {cartItem.price}</div>
                                             <div>Total: {cartItem.price * cartItem.number}</div>
-                                            <div>
-                                                <button onClick={() => increaseItem(cartItem.name)} className="bg-blue-500 hover:bg-blue-600 text-white font-bold py-2 px-4 rounded">Increase</button>
-                                                <button onClick={() => decreaseItem(cartItem.name)} className="bg-yellow-400 hover:bg-yellow-500 text-white font-bold py-2 px-4 m-1 rounded">Decrease</button>
-                                                <button onClick={() => removeItem(cartItem.name)} className="bg-red-500 hover:bg-red-600 text-white font-bold py-2 px-4 rounded">Remove</button>
+                                            <div className="flex flex-wrap justify-center items-center">
+                                                <button onClick={() => increaseItem(cartItem.name)} className="bg-blue-500 hover:bg-blue-600 cart-buttons">Increase</button>
+                                                <button onClick={() => decreaseItem(cartItem.name)} className="bg-yellow-400 hover:bg-yellow-500 cart-buttons">Decrease</button>
+                                                <button onClick={() => removeItem(cartItem.name)} className="bg-red-500 hover:bg-red-600 cart-buttons">Remove</button>
                                             </div>
                                         </div>
                                     )

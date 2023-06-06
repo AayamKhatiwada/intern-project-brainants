@@ -1,4 +1,4 @@
-import React from 'react';
+import { useState } from 'react';
 import { signinAuthUserWithEmailAndPassword } from '../firebase';
 import { ErrorNoty, SuccessNoty } from '../Reuseables/notifications';
 import { SubmitHandler, useForm } from 'react-hook-form';
@@ -9,10 +9,10 @@ interface Inputs {
     password: string,
 };
 
-
 const LoginComponent = () => {
     const queryClient = useQueryClient()
 
+    const [isLoading, setIsLoading] = useState(false)
     const { register, handleSubmit, formState: { errors } } = useForm<Inputs>();
 
     const createUserLoginMiuation = useMutation((credentials: {
@@ -27,10 +27,12 @@ const LoginComponent = () => {
         } else if (error.code === "auth/user-not-found") {
             ErrorNoty("User hasn't registered", 3000)
         }
+        setIsLoading(false)
     })
     )
 
     const handleLogin: SubmitHandler<Inputs> = async (data) => {
+        setIsLoading(true)
         const { email, password } = data
         // console.log(email, password)
 
@@ -64,7 +66,13 @@ const LoginComponent = () => {
                             {errors.password && <div className="text-red-400">This field must contain more than 5 character</div>}
                         </div>
                         <button className="btn" type="submit">
-                            Login
+                            Login &nbsp;
+                            {
+                                isLoading &&
+                                <span>
+                                    <svg width="24" height="24" viewBox="0 0 24 24" style={{ display: "inherit" }}><path d="M12,1A11,11,0,1,0,23,12,11,11,0,0,0,12,1Zm0,19a8,8,0,1,1,8-8A8,8,0,0,1,12,20Z" opacity=".25" /><path d="M10.14,1.16a11,11,0,0,0-9,8.92A1.59,1.59,0,0,0,2.46,12,1.52,1.52,0,0,0,4.11,10.7a8,8,0,0,1,6.66-6.61A1.42,1.42,0,0,0,12,2.69h0A1.57,1.57,0,0,0,10.14,1.16Z" className="spinner_ajPY" /></svg>
+                                </span>
+                            }
                         </button>
                     </form>
                 </div>
