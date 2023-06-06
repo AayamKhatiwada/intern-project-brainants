@@ -15,16 +15,16 @@ import CartComponent from './Home/cart';
 import NavigateBarComponent from './Home/navigationBar';
 import ProductRoute from './routes/product.route';
 import { setCart } from './store/Cart/cartSlice';
-import { useQuery } from 'react-query';
 import PrivateRoute from './Reuseables/privateRoute';
 import ProfileComponent from './Home/profile';
 import { ToastContainer } from 'react-toastify';
+import { useQuery } from '@tanstack/react-query';
 
 const App: React.FC = () => {
   const dispatch = useDispatch()
   const currentUser = useSelector((state: RootInterface) => state.user.user)
 
-  const { refetch } = useQuery("fetchAllData", () => checkUser(async (userLog: firebase.User | null) => {
+  const { refetch } = useQuery(["fetchAllData"], () => checkUser(async (userLog: firebase.User | null) => {
     if (userLog) {
       dispatch(isLoading(true))
 
@@ -32,7 +32,7 @@ const App: React.FC = () => {
       const image = await getUserImage(userLog.uid).then((url) => {
         return url
       })
-      // console.log(image)
+
       dispatch(addUser({ image: image, displayName: userData?.displayName, email: userData?.email, uid: userData?.uid }))
 
       const categories = await getCategoriesFromFirebase()
@@ -63,8 +63,8 @@ const App: React.FC = () => {
           {
             !currentUser ? (
               <div className='flex justify-around mt-5'>
-                <RegisterComponent refetch={refetch} />
-                <LoginComponent refetch={refetch} />
+                <RegisterComponent />
+                <LoginComponent />
               </div>
             ) : <HomeComponent />
           }
