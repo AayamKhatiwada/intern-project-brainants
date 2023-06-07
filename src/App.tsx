@@ -62,7 +62,7 @@ const App: React.FC = () => {
         <Route index element=
           {
             !currentUser ? (
-              <div className='flex justify-around mt-5'>
+              <div className='flex justify-around mt-5 flex-col items-center space-y-5 md:items-stretch md:flex-row md:space-y-0'>
                 <RegisterComponent />
                 <LoginComponent />
               </div>
