@@ -16,13 +16,18 @@ jobs:
         run: node --version
         
   build:
-    needs: node
+#     needs: node
     runs-on: ubuntu-latest
     steps:
-      - name: Installing dependencies
-        run: cd .. && npm install
-      - name: Creating build
-        run: cd .. && npm run build
+      - name: Checkout repository
+        uses: actions/checkout@v3
+      - name: Display package.json path
+        run: | 
+          echo "Path: ${{ github.workspace }}/package.json"
+#       - name: Installing dependencies
+#         run: cd .. && npm install
+#       - name: Creating build
+#         run: cd .. && npm run build
         
         
         
