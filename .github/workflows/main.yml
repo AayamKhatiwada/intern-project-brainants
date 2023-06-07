@@ -20,9 +20,9 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Installing dependencies
-        run: npm install
+        run: cd .. && npm install
       - name: Creating build
-        run: npm run build
+        run: cd .. && npm run build
         
         
         
