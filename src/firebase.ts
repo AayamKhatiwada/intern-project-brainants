@@ -81,7 +81,7 @@ export const createUserDocumentFromAuth = async (
   // console.log(userSnapshot.exists());
 
   const { email, uid } = userAuth;
-  const createdAt = new Date();
+  const createdAt = Date.now();
   if (!userSnapshot.exists()) {
     try {
       await setDoc(userDocRef, {

@@ -43,7 +43,7 @@ const LoginComponent = () => {
 
     return (
         <>
-            <div className="flex w-1/4">
+            <div className="flex w-3/4 md:w-1/3 lg:w-1/4">
                 <div className="bg-gray-300 p-10 rounded shadow-md w-full">
                     <h2 className="text-2xl font-bold mb-6">Login</h2>
                     <form onSubmit={handleSubmit(handleLogin)}>
