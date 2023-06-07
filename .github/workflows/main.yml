@@ -6,7 +6,7 @@ on:
   workflow_dispatch: 
 
 jobs:
-  hello: 
+  node: 
     runs-on: ubuntu-latest
     steps:
       - uses: actions/setup-node@v3
@@ -14,3 +14,14 @@ jobs:
           node-version: 16
       - name: node version
         run: node --version
+        
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Installing dependencies
+        run: npm ci
+      - name: Creating build
+        run: npm run build
+        
+        
+        
