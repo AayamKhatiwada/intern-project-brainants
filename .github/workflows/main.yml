@@ -21,13 +21,13 @@ jobs:
     steps:
       - name: Checkout repository
         uses: actions/checkout@v3
-      - name: Display package.json path
-        run: | 
-          echo "Path: ${{ github.workspace }}/package.json"
-#       - name: Installing dependencies
-#         run: cd .. && npm install
-#       - name: Creating build
-#         run: cd .. && npm run build
+#       - name: Display package.json path
+#         run: | 
+#           echo "Path: ${{ github.workspace }}/package.json"
+      - name: Installing dependencies
+        run: npm install
+      - name: Creating build
+        run: npm run build
         
         
         
